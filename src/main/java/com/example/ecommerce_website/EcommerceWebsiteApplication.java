@@ -7,10 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class EcommerceWebsiteApplication {
     public static void main(String[] args) {
         SpringApplication.run(EcommerceWebsiteApplication.class, args);
-
-
         System.out.println("Hello World");
-        System.out.println("hihihi");
     }
 
 
