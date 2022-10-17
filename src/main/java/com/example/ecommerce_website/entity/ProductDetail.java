@@ -5,14 +5,59 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
+
+@Entity
+@Table(name = "tbl_productDetail")
 public class ProductDetail {
+
+    @Id
+    @SequenceGenerator(
+            name = "productDetail_sequence",
+            sequenceName = "productDetail_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "productDetail_sequence"
+    )
+    @Column(name = "productDetail_id", updatable = false)
     private int productDetailId;
+
+    @Column(name = "stock", nullable = false, columnDefinition = "Int")
     private int stock;
+
+    @Column(name = "price", nullable = false, columnDefinition = "Numeric")
     private double price;
-    private int productId;
-    private int sizeId;
+
+    @Column(name = "status", nullable = false, columnDefinition = "VARCHAR(20)")
+    private String status;
+
+    @ManyToOne
+    @JoinColumn(
+            name = "product_id",
+            nullable = false,
+            referencedColumnName = "product_id",
+            foreignKey = @ForeignKey(name = "product_productDetail_fk")
+    )
+    private Product product;
+
+    @ManyToOne
+    @JoinColumn(
+            name = "size_id",
+            nullable = false,
+            referencedColumnName = "size_id",
+            foreignKey = @ForeignKey(name = "size_productDetail_fk")
+    )
+    private Size size;
+
+    @OneToMany(mappedBy = "productDetail")
+    private List<OrderDetail> orderDetails;
+
 }
