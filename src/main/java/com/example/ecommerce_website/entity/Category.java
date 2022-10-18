@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.sound.sampled.Port;
@@ -17,7 +18,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "category")
-
 public class Category {
     @Id
     @SequenceGenerator(
