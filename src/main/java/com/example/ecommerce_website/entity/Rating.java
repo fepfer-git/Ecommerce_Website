@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 
 @Entity
-@Table(name = "tbl_rating")
+@Table(name = "[rating]")
 public class Rating {
 
     @EmbeddedId
@@ -24,10 +24,11 @@ public class Rating {
     @JoinColumn(name = "product_id")
     Product product;
 
-    @ManyToOne
     @MapsId("userId")
+    @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
 
+    @Column(name = "rating", nullable = false, columnDefinition = "INT")
     private int rating;
 }

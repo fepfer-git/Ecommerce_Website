@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Getter
 
 @Entity
-@Table(name = "tbl_role")
+@Table(name = "role")
 
 public class Role {
     @Id
@@ -34,4 +35,7 @@ public class Role {
 
     @Column(name = "status", nullable = false, columnDefinition = "VARCHAR(20)")
     private String status;
+
+    @OneToMany(mappedBy="role")
+    private List<User> users;
 }

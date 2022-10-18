@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 
 @Entity
-@Table(name = "tbl_category")
+@Table(name = "category")
 
 public class Category {
     @Id

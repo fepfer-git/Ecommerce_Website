@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 
 @Entity
-@Table(name = "tbl_productDetail")
+@Table(name = "product_detail")
 public class ProductDetail {
 
     @Id
@@ -27,7 +27,7 @@ public class ProductDetail {
             strategy = GenerationType.SEQUENCE,
             generator = "productDetail_sequence"
     )
-    @Column(name = "productDetail_id", updatable = false)
+    @Column(name = "product_detail_id", updatable = false)
     private int productDetailId;
 
     @Column(name = "stock", nullable = false, columnDefinition = "Int")

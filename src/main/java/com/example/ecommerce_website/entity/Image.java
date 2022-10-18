@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-@Table(name = "tbl_image")
+@Table(name = "image")
 
 public class Image {
 

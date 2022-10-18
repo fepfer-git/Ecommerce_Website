@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 
 @Entity
-@Table(name = "tbl_size")
+@Table(name = "size")
 
 public class Size {
     @Id

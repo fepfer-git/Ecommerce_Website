@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 
 @Entity
-@Table(name = "tbl_product")
+@Table (name = "product")
 
 public class Product {
     @Id
@@ -57,4 +57,5 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     private List<Rating> ratings;
+
 }

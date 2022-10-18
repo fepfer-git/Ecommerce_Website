@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 
 @Entity
-@Table(name = "tbl_orderDetail")
+@Table(name = "order_detail")
 public class OrderDetail {
     @Id
     @SequenceGenerator(
@@ -34,11 +34,18 @@ public class OrderDetail {
     private String status;
 
     @ManyToOne
-    @JoinColumn(name = "productDetailId")
+    @JoinColumn(
+            name = "product_detail_id",
+            nullable = false,
+            referencedColumnName = "product_detail_id"
+    )
     private ProductDetail productDetail;
 
     @ManyToOne
-    @JoinColumn(name = "orderId")
+    @JoinColumn(
+            name = "order_id",
+            nullable = false,
+            referencedColumnName = "order_id")
     private Order order;
 
 }

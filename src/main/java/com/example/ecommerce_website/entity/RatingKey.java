@@ -7,8 +7,8 @@ import java.io.Serializable;
 @Embeddable
 public class RatingKey implements Serializable {
     @Column(name = "user_id")
-    String userId;
+    private String userId;
 
-    @Column(name = "product_id")
-    int productId;
+    @Column( name = "product_id")
+    private int productId;
 }

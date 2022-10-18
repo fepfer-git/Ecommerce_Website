@@ -14,9 +14,8 @@ import java.util.List;
 @Setter
 @Getter
 
-
 @Entity
-@Table(name = "tbl_order")
+@Table(name = "[order]")
 public class Order {
     @Id
     @SequenceGenerator(
@@ -28,6 +27,7 @@ public class Order {
             strategy = GenerationType.SEQUENCE,
             generator = "order_sequence"
     )
+    @Column(name = "order_id", nullable = false, columnDefinition = "Date")
     private int orderId;
 
     @Column(name = "order_date", nullable = false, columnDefinition = "Date")

@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 
 @Entity
-@Table(name = "tbl_user")
+@Table(name = "[user]")
 public class User {
     @Id
     @Column(name = "user_id", nullable = false, updatable = false, columnDefinition = "TEXT")
