@@ -5,14 +5,19 @@ import com.example.ecommerce_website.services.interfaces.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/category")
 public class CategoryController {
 
+    private final ICategoryService categoryService;
+
     @Autowired
-    private ICategoryService categoryService;
+    public CategoryController(ICategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @GetMapping("all")
     public List<Category> getCategories(){
@@ -29,8 +34,8 @@ public class CategoryController {
         categoryService.updateACategory(category);
     }
 
-    @DeleteMapping(path = "{customerId}")
-    public void deleteACategory(@PathVariable("customerId") int id){
+    @DeleteMapping(path = "delete/{categoryId}")
+    public void deleteACategory(@PathVariable("categoryId") int id){
         categoryService.deleteACategory(id);
     }
 

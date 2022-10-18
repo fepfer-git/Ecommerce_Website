@@ -20,11 +20,12 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public List<Category> getListCategories() {
-        return categoryRepository.findAll();
+        return categoryRepository.findCategoriesByStatus("Active");
     }
 
     @Override
     public void createNewCategory(Category category) {
+        category.setStatus("Active");
         Category saveCategory = categoryRepository.save(category);
     }
 
@@ -35,9 +36,11 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public void deleteACategory(int id) {
-        Optional<Category> category = categoryRepository.findById(id);
-
+        Category category = categoryRepository.getById(id);
+        category.setStatus("Inactive");
+        Category updateCategoryStatus = categoryRepository.save(category);
     }
+
 
 
 }
