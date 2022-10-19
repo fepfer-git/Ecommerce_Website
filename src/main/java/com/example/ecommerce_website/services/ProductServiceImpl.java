@@ -3,6 +3,7 @@ package com.example.ecommerce_website.services;
 import com.example.ecommerce_website.dto.ProductDto;
 import com.example.ecommerce_website.entity.Category;
 import com.example.ecommerce_website.entity.Product;
+import com.example.ecommerce_website.exception.NotFoundException;
 import com.example.ecommerce_website.repository.ProductRepository;
 import com.example.ecommerce_website.services.interfaces.IProductService;
 import org.modelmapper.ModelMapper;
@@ -60,7 +61,8 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public ProductDto getProductById(int id) {
-        Product product = productRepository.findById(id).get();
+        Product product = productRepository.findById(id).stream().findFirst().
+                orElseThrow(() -> new NotFoundException("Product with id " + id +" not found!"));
         ProductDto productDto = modelMapper.map(product, ProductDto.class);
         return productDto;
     }
