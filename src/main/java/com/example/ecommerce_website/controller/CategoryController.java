@@ -11,13 +11,8 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/category")
 public class CategoryController {
-
-    private final ICategoryService categoryService;
-
     @Autowired
-    public CategoryController(ICategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
+    private ICategoryService categoryService;
 
     @GetMapping("all")
     public List<Category> getCategories(){
@@ -38,5 +33,7 @@ public class CategoryController {
     public void deleteACategory(@PathVariable("categoryId") int id){
         categoryService.deleteACategory(id);
     }
+
+
 
 }

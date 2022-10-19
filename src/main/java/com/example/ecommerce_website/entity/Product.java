@@ -1,5 +1,6 @@
 package com.example.ecommerce_website.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,13 +50,17 @@ public class Product {
     )
     private Category category;
 
+
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private List<Image> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private List<ProductDetail> productDetails = new ArrayList<>();
 
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private List<Rating> ratings;
 
 }
