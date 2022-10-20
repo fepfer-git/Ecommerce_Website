@@ -10,4 +10,5 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findProductsByStatus(String status);
     List<Product> findProductsByCategory_CategoryId(int categoryId);
+    List<Product> findProductsByProductNameContainingIgnoreCase(String searchKey);
 }

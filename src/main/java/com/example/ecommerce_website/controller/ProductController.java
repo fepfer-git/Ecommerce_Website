@@ -1,10 +1,11 @@
 package com.example.ecommerce_website.controller;
 
 import com.example.ecommerce_website.dto.ProductDto;
-import com.example.ecommerce_website.entity.Category;
+import com.example.ecommerce_website.dto.update.ProductDtoUpdate;
 import com.example.ecommerce_website.entity.Product;
 import com.example.ecommerce_website.services.interfaces.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,8 +33,15 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ProductDto getProductById(@PathVariable ("productId") int id){
-        return productService.getProductById(id);
+    public ResponseEntity<ProductDto>  getProductById(@PathVariable ("productId") int id){
+        ProductDto productDto = productService.getProductById(id);
+        return ResponseEntity.ok().body(productDto);
+    }
+
+    @GetMapping("/search/{productName}")
+    public ResponseEntity <List<Product>>  getListProductsByName(@PathVariable ("productName") String searchName){
+        List<Product> products = productService.getProductByName(searchName);
+        return ResponseEntity.ok().body(products);
     }
 
     @PostMapping("create")
@@ -42,13 +50,16 @@ public class ProductController {
     }
 
     @PutMapping("update")
-    public void updateAProduct(@RequestBody Product product){
-        productService.updateAProduct(product);
+    public ResponseEntity<Product> updateAProduct(@RequestBody ProductDtoUpdate productDtoUpdate){
+        return ResponseEntity.ok().body(
+                productService.updateAProduct(productDtoUpdate));
     }
 
     @DeleteMapping(path = "delete/{productId}")
     public void deleteAProduct(@PathVariable("productId") int id){
         productService.deleteAProduct(id);
     }
+
+
 
 }
