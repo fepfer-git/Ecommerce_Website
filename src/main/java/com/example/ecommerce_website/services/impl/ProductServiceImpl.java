@@ -1,4 +1,4 @@
-package com.example.ecommerce_website.services;
+package com.example.ecommerce_website.services.impl;
 
 import com.example.ecommerce_website.dto.ProductDto;
 import com.example.ecommerce_website.dto.update.ProductDtoUpdate;

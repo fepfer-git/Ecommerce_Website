@@ -5,6 +5,7 @@ import com.example.ecommerce_website.dto.update.ProductDtoUpdate;
 import com.example.ecommerce_website.entity.Product;
 import com.example.ecommerce_website.services.interfaces.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +52,7 @@ public class ProductController {
 
     @PutMapping("update")
     public ResponseEntity<Product> updateAProduct(@RequestBody ProductDtoUpdate productDtoUpdate){
-        return ResponseEntity.ok().body(
+        return ResponseEntity.status(HttpStatus.OK).body(
                 productService.updateAProduct(productDtoUpdate));
     }
 

@@ -1,4 +1,4 @@
-package com.example.ecommerce_website.services;
+package com.example.ecommerce_website.services.impl;
 
 import com.example.ecommerce_website.entity.Category;
 import com.example.ecommerce_website.repository.CategoryRepository;

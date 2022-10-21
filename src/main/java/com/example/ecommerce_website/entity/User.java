@@ -1,18 +1,17 @@
 package com.example.ecommerce_website.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
-
+@Builder
 @Entity
 @Table(name = "[user]")
 public class User {
@@ -32,14 +31,8 @@ public class User {
     @Column(name = "status", nullable = false, columnDefinition = "VARCHAR(20)")
     private String status;
 
-    @ManyToOne
-    @JoinColumn(
-            name = "role_id",
-            nullable = false,
-            referencedColumnName = "role_id",
-            foreignKey = @ForeignKey(name = "role_user_fk")
-    )
-    private Role role;
+    @Column(name = "role", nullable = false, columnDefinition = "VARCHAR(10)")
+    private String role;
 
     @OneToMany(mappedBy="user")
     private List<Order> orders;

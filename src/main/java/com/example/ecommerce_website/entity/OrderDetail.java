@@ -11,7 +11,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Setter
 @Getter
-
 @Entity
 @Table(name = "order_detail")
 public class OrderDetail {

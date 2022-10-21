@@ -1,11 +1,12 @@
 package com.example.ecommerce_website;
 
+import com.example.ecommerce_website.entity.User;
+import com.example.ecommerce_website.services.interfaces.IUserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 
 @SpringBootApplication
 public class EcommerceWebsiteApplication {
@@ -15,10 +16,27 @@ public class EcommerceWebsiteApplication {
         return new ModelMapper();
     }
 
+
     public static void main(String[] args) {
         SpringApplication.run(EcommerceWebsiteApplication.class, args);
     }
 
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
