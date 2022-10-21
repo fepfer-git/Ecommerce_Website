@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDtoCreate {
+public class UserDto {
     @Length(min = 3, max = 15, message = "User Id must be between 3-15 characters!")
     @NotBlank(message = "User Id cannot be blank!")
     private String userId;

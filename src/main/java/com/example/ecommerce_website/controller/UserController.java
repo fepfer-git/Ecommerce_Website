@@ -1,6 +1,7 @@
 package com.example.ecommerce_website.controller;
 
-import com.example.ecommerce_website.dto.create.UserDtoCreate;
+import com.example.ecommerce_website.dto.create.UserDto;
+import com.example.ecommerce_website.dto.response.UserDtoResponse;
 import com.example.ecommerce_website.entity.User;
 import com.example.ecommerce_website.services.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +20,20 @@ public class UserController {
     private IUserService userService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<User>>getUsers(){
+    public ResponseEntity<List<UserDtoResponse>>getUsers(){
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
+    @GetMapping("{userId}")
+    public ResponseEntity<UserDtoResponse>getUser(@PathVariable String userId){
+        return ResponseEntity.ok().body(userService.getUser(userId));
+    }
+
+
     @PostMapping("/save")
-    public ResponseEntity saveUser(@Valid @RequestBody UserDtoCreate userDtoCreate){
-        userService.saveUser(userDtoCreate);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Create new user success!");
+    public ResponseEntity<UserDtoResponse> saveUser(@Valid @RequestBody UserDto userDto){
+        UserDtoResponse userDtoResponse = userService.saveUser(userDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userDtoResponse);
     }
 
 }
