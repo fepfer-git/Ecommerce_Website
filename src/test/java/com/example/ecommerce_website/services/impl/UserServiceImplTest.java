@@ -7,20 +7,15 @@ import com.example.ecommerce_website.exception.DuplicatedException;
 import com.example.ecommerce_website.exception.NotFoundException;
 import com.example.ecommerce_website.mappers.ModelMapperConfiguration;
 import com.example.ecommerce_website.repository.UserRepository;
-import org.checkerframework.checker.nullness.Opt;
-import org.hibernate.annotations.NotFound;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 
-import javax.validation.constraints.Null;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -58,7 +53,7 @@ class UserServiceImplTest {
         when(userRepository.findByEmail(userDto.getEmail())).thenReturn(null);
         when(userRepository.save(user)).thenReturn(user);
         when(modelMapper.map(user,UserDtoResponse.class)).thenReturn(userDtoResponse);
-        UserDtoResponse userResult = userServiceImpl.saveUser(userDto);
+        UserDtoResponse userResult = userServiceImpl.createNewUser(userDto);
         assertThat(userResult,is(userDtoResponse));
     }
 
@@ -69,12 +64,27 @@ class UserServiceImplTest {
                 ()->{
                     when(modelMapper.map(userDto,User.class)).thenReturn(user);
                     when(userRepository.findById(userDto.getUserId())).thenReturn(Optional.of(user));
-                    userServiceImpl.saveUser(userDto);
+                    userServiceImpl.createNewUser(userDto);
 
                 });
-        Assertions.assertEquals("UserID are already exist!", thrown.getMessage());
+        Assertions.assertEquals("UserID is already exist!", thrown.getMessage());
 
     }
+
+    @Test
+    void saveUser_WhenEmailIsDuplicated(){
+
+        DuplicatedException thrown = assertThrows(DuplicatedException.class,
+                ()->{
+                    when(modelMapper.map(userDto,User.class)).thenReturn(user);
+                    when(userRepository.findById(userDto.getUserId())).thenReturn(Optional.empty());
+                    when(userRepository.findByEmail(userDto.getUserId())).thenReturn(user);
+                    userServiceImpl.createNewUser(userDto);
+                });
+        Assertions.assertEquals("Email is already exist!", thrown.getMessage());
+
+    }
+
 
     @Test
     void getUser_ShouldReturnUser_WhenDataValid() {

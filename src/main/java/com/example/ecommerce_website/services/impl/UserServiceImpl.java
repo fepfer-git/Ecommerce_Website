@@ -33,16 +33,16 @@ public class UserServiceImpl implements IUserService {
 
     @Override
 
-    public UserDtoResponse saveUser(UserDto userDto) {
+    public UserDtoResponse createNewUser(UserDto userDto) {
         log.info("Saving new user to the database");
         User user = modelMapper.map(userDto, User.class);
         user.setStatus("Active");
         user.setRole("USER");
 
         if (userRepository.findById(userDto.getUserId()).isPresent()) {
-            throw new DuplicatedException("UserID are already exist!");
+            throw new DuplicatedException("UserID is already exist!");
         } else if (userRepository.findByEmail(userDto.getEmail()) != null) {
-            throw new DuplicatedException("Email are already exist!");
+            throw new DuplicatedException("Email is already exist!");
         }
         User savedUser = userRepository.save(user);
         return modelMapper.map(savedUser, UserDtoResponse.class);

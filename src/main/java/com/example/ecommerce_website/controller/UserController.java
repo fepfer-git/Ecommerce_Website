@@ -2,7 +2,6 @@ package com.example.ecommerce_website.controller;
 
 import com.example.ecommerce_website.dto.create.UserDto;
 import com.example.ecommerce_website.dto.response.UserDtoResponse;
-import com.example.ecommerce_website.entity.User;
 import com.example.ecommerce_website.services.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +31,7 @@ public class UserController {
 
     @PostMapping("/save")
     public ResponseEntity<UserDtoResponse> saveUser(@Valid @RequestBody UserDto userDto){
-        UserDtoResponse userDtoResponse = userService.saveUser(userDto);
+        UserDtoResponse userDtoResponse = userService.createNewUser(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(userDtoResponse);
     }
 
