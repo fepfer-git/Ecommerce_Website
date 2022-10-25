@@ -29,7 +29,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @Transactional
 @Slf4j
-public class UserServiceImpl implements IUserService, UserDetailsService {
+public class UserServiceImpl implements IUserService{
     @Autowired
     ModelMapperConfiguration listMapper;
     @Autowired
@@ -38,20 +38,6 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUserName(username);
-        if (user == null) {
-            log.error("User not found in database");
-            throw new NotFoundException("User not found in database");
-        } else {
-            log.info("User found in database: {}", username);
-        }
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRole()));
-        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), authorities);
-    }
 
     @Override
     public UserDtoResponse createNewUser(UserDto userDto) {
