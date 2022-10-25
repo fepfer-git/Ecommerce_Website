@@ -16,11 +16,23 @@ import java.util.List;
 @Table(name = "[user]")
 public class User {
     @Id
-    @Column(name = "user_id", nullable = false, updatable = false, columnDefinition = "TEXT")
-    private String userId;
+    @SequenceGenerator(
+            name = "user_sequence",
+            sequenceName = "user_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "user_sequence"
+    )
+    @Column(name = "user_id", updatable = false, columnDefinition = "Int")
+    private int userId;
 
-    @Column(name = "user_name", nullable = false, columnDefinition = "TEXT")
-    private String name;
+    @Column(name = "user_name", nullable = false, unique = true, columnDefinition = "TEXT")
+    private String userName;
+
+    @Column(name = "user_full_name", nullable = false, columnDefinition = "TEXT")
+    private String fullName;
 
     @Column(name = "user_password", nullable = false, columnDefinition = "TEXT")
     private String password;

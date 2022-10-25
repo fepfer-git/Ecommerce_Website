@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,7 @@ class UserServiceImplTest {
     private UserServiceImpl userServiceImpl;
     private ModelMapperConfiguration listMapper;
     private UserDtoResponse userDtoResponse;
+    private PasswordEncoder passwordEncoder;
     @Mock
     List<User> userList;
     @Mock
@@ -42,14 +44,14 @@ class UserServiceImplTest {
         initialUser = mock(User.class);
         modelMapper = mock(ModelMapper.class);
         listMapper = mock(ModelMapperConfiguration.class);
-        userServiceImpl = new UserServiceImpl(listMapper, modelMapper,userRepository);
+        userServiceImpl = new UserServiceImpl(listMapper, modelMapper,userRepository, passwordEncoder);
         userDtoResponse = mock(UserDtoResponse.class);
     }
 
     @Test
     void saveUser_WhenDataValid() {
         when(modelMapper.map(userDto,User.class)).thenReturn(user);
-        when(userRepository.findById(userDto.getUserId())).thenReturn(Optional.empty());
+        when(userRepository.findByUserName(userDto.getUserName())).thenReturn(null);
         when(userRepository.findByEmail(userDto.getEmail())).thenReturn(null);
         when(userRepository.save(user)).thenReturn(user);
         when(modelMapper.map(user,UserDtoResponse.class)).thenReturn(userDtoResponse);
@@ -63,11 +65,11 @@ class UserServiceImplTest {
         DuplicatedException thrown = assertThrows(DuplicatedException.class,
                 ()->{
                     when(modelMapper.map(userDto,User.class)).thenReturn(user);
-                    when(userRepository.findById(userDto.getUserId())).thenReturn(Optional.of(user));
+                    when(userRepository.findByUserName(userDto.getUserName())).thenReturn(user);
                     userServiceImpl.createNewUser(userDto);
 
                 });
-        Assertions.assertEquals("UserID is already exist!", thrown.getMessage());
+        Assertions.assertEquals("Username is already exist!", thrown.getMessage());
 
     }
 
@@ -77,8 +79,8 @@ class UserServiceImplTest {
         DuplicatedException thrown = assertThrows(DuplicatedException.class,
                 ()->{
                     when(modelMapper.map(userDto,User.class)).thenReturn(user);
-                    when(userRepository.findById(userDto.getUserId())).thenReturn(Optional.empty());
-                    when(userRepository.findByEmail(userDto.getUserId())).thenReturn(user);
+                    when(userRepository.findByUserName(userDto.getUserName())).thenReturn(null);
+                    when(userRepository.findByEmail(userDto.getEmail())).thenReturn(user);
                     userServiceImpl.createNewUser(userDto);
                 });
         Assertions.assertEquals("Email is already exist!", thrown.getMessage());

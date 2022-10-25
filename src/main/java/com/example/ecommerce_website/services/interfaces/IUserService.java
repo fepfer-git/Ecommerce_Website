@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IUserService {
     UserDtoResponse createNewUser(UserDto userDto);
-    UserDtoResponse getUser(String userId);
+    UserDtoResponse getUser(int userId);
     List<UserDtoResponse> getUsers();
 
 }

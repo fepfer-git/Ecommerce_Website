@@ -12,10 +12,16 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,38 +29,53 @@ import java.util.Optional;
 @AllArgsConstructor
 @Transactional
 @Slf4j
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl implements IUserService, UserDetailsService {
     @Autowired
     ModelMapperConfiguration listMapper;
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUserName(username);
+        if (user == null) {
+            log.error("User not found in database");
+            throw new NotFoundException("User not found in database");
+        } else {
+            log.info("User found in database: {}", username);
+        }
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getRole()));
+        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), authorities);
+    }
 
+    @Override
     public UserDtoResponse createNewUser(UserDto userDto) {
         log.info("Saving new user to the database");
         User user = modelMapper.map(userDto, User.class);
         user.setStatus("Active");
         user.setRole("USER");
-
-        if (userRepository.findById(userDto.getUserId()).isPresent()) {
-            throw new DuplicatedException("UserID is already exist!");
+        if (userRepository.findByUserName(userDto.getUserName()) != null) {
+            throw new DuplicatedException("Username is already exist!");
         } else if (userRepository.findByEmail(userDto.getEmail()) != null) {
             throw new DuplicatedException("Email is already exist!");
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
         return modelMapper.map(savedUser, UserDtoResponse.class);
     }
 
     @Override
-    public UserDtoResponse getUser(String userId) {
+    public UserDtoResponse getUser(int userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
             UserDtoResponse userDtoResponse = modelMapper.map(user.get(), UserDtoResponse.class);
             return userDtoResponse;
-        }else{
+        } else {
             throw new NotFoundException("There is no user with this user ID!");
         }
     }
@@ -62,7 +83,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<UserDtoResponse> getUsers() {
         List<User> users = userRepository.findAll();
-        if (users.isEmpty()){
+        if (users.isEmpty()) {
             throw new NotFoundException("There is nothing here!");
         }
         List<UserDtoResponse> userDtoResponseList = listMapper.mapToUserDtoResponseList(users);

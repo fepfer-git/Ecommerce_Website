@@ -9,8 +9,8 @@ import java.io.Serializable;
  */
 @Data
 public class UserDtoResponse{
-    private String userId;
-    private String name;
+    private int userId;
+    private String fullName;
     private String email;
     private String role;
 }
