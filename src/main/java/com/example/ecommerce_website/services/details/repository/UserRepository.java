@@ -1,4 +1,4 @@
-package com.example.ecommerce_website.repository;
+package com.example.ecommerce_website.services.details.repository;
 
 import com.example.ecommerce_website.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

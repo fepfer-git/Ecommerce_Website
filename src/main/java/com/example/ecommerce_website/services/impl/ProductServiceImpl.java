@@ -4,7 +4,7 @@ import com.example.ecommerce_website.dto.ProductDto;
 import com.example.ecommerce_website.dto.update.ProductDtoUpdate;
 import com.example.ecommerce_website.entity.Product;
 import com.example.ecommerce_website.exception.NotFoundException;
-import com.example.ecommerce_website.repository.ProductRepository;
+import com.example.ecommerce_website.services.details.repository.ProductRepository;
 import com.example.ecommerce_website.services.interfaces.IProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

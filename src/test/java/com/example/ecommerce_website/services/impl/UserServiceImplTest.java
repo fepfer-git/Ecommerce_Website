@@ -6,7 +6,7 @@ import com.example.ecommerce_website.entity.User;
 import com.example.ecommerce_website.exception.DuplicatedException;
 import com.example.ecommerce_website.exception.NotFoundException;
 import com.example.ecommerce_website.mappers.ModelMapperConfiguration;
-import com.example.ecommerce_website.repository.UserRepository;
+import com.example.ecommerce_website.services.details.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
