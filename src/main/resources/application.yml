@@ -1,0 +1,6 @@
+amazonProperties:
+endpointUrl: .s3.ap-northeast-1.amazonaws.com
+region: ap-northeast-1
+accessKey: AKIA256OMC2R4YDATIWZ
+secretKey: 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
+bucketName: fepferstorage

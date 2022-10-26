@@ -1,5 +1,6 @@
 package com.example.ecommerce_website.security;
 
+import com.example.ecommerce_website.security.JwtUtil;
 import com.example.ecommerce_website.security.filter.CustomAuthenticationFilter;
 import com.example.ecommerce_website.security.filter.CustomAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(POST, "/api/user/**").hasAnyAuthority("ADMIN");
 
         http.authorizeRequests().antMatchers(GET, "/api/product/**").hasAnyAuthority("USER");
-        http.authorizeRequests().anyRequest().authenticated();
+
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean(), jwtUtil));
         http.addFilterBefore(new CustomAuthorizationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
     }
