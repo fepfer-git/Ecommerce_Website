@@ -1,9 +1,7 @@
 package com.example.ecommerce_website.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Table(name = "image")
-
+@Builder
 public class Image {
 
     @Id
@@ -35,6 +33,7 @@ public class Image {
     @Column(name = "status", nullable = false, columnDefinition = "VARCHAR(20)")
     private String status;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(
             name = "product_id",

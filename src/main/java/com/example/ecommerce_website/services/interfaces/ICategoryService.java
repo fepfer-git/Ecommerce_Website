@@ -1,7 +1,5 @@
 package com.example.ecommerce_website.services.interfaces;
 import com.example.ecommerce_website.entity.Category;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

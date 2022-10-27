@@ -5,8 +5,8 @@ import com.example.ecommerce_website.dto.response.UserDtoResponse;
 import com.example.ecommerce_website.entity.User;
 import com.example.ecommerce_website.exception.DuplicatedException;
 import com.example.ecommerce_website.exception.NotFoundException;
-import com.example.ecommerce_website.mappers.ModelMapperConfiguration;
-import com.example.ecommerce_website.services.details.repository.UserRepository;
+import com.example.ecommerce_website.mappers.ObjectMapperUtils;
+import com.example.ecommerce_website.repository.UserRepository;
 import com.example.ecommerce_website.services.interfaces.IUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +25,7 @@ import java.util.Optional;
 @Slf4j
 public class UserServiceImpl implements IUserService{
     @Autowired
-    ModelMapperConfiguration listMapper;
-    @Autowired
-    private ModelMapper modelMapper;
+    ObjectMapperUtils objectMapperUtils;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -36,7 +34,7 @@ public class UserServiceImpl implements IUserService{
     @Override
     public UserDtoResponse createNewUser(UserDto userDto) {
         log.info("Saving new user to the database");
-        User user = modelMapper.map(userDto, User.class);
+        User user = objectMapperUtils.map(userDto, User.class);
         user.setStatus("Active");
         user.setRole("USER");
         if (userRepository.findByUserName(userDto.getUserName()) != null) {
@@ -46,14 +44,14 @@ public class UserServiceImpl implements IUserService{
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
-        return modelMapper.map(savedUser, UserDtoResponse.class);
+        return objectMapperUtils.map(savedUser, UserDtoResponse.class);
     }
 
     @Override
     public UserDtoResponse getUser(int userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
-            UserDtoResponse userDtoResponse = modelMapper.map(user.get(), UserDtoResponse.class);
+            UserDtoResponse userDtoResponse = objectMapperUtils.map(user.get(), UserDtoResponse.class);
             return userDtoResponse;
         } else {
             throw new NotFoundException("There is no user with this user ID!");
@@ -66,7 +64,7 @@ public class UserServiceImpl implements IUserService{
         if (users.isEmpty()) {
             throw new NotFoundException("There is nothing here!");
         }
-        List<UserDtoResponse> userDtoResponseList = listMapper.mapToUserDtoResponseList(users);
+        List<UserDtoResponse> userDtoResponseList = objectMapperUtils.mapAll(users,UserDtoResponse.class);
         return userDtoResponseList;
     }
 

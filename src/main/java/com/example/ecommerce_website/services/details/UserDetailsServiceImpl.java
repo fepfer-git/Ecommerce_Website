@@ -2,7 +2,7 @@ package com.example.ecommerce_website.services.details;
 
 import com.example.ecommerce_website.entity.User;
 import com.example.ecommerce_website.exception.NotFoundException;
-import com.example.ecommerce_website.services.details.repository.UserRepository;
+import com.example.ecommerce_website.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

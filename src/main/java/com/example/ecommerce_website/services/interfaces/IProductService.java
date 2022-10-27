@@ -1,26 +1,24 @@
 package com.example.ecommerce_website.services.interfaces;
 
-import com.example.ecommerce_website.dto.ProductDto;
-import com.example.ecommerce_website.dto.update.ProductDtoUpdate;
-import com.example.ecommerce_website.entity.Category;
-import com.example.ecommerce_website.entity.Product;
+import com.example.ecommerce_website.dto.create.ProductDto;
+import com.example.ecommerce_website.dto.response.ProductDtoResponse;
 
 import java.util.List;
 
 public interface IProductService{
-    List<Product> getListProducts();
+    List<ProductDtoResponse> getListProducts();
 
-    List<Product> getListProductsAvailable();
+    List<ProductDtoResponse> getListProductsAvailable();
 
-    void createNewProduct(Product product);
+    ProductDtoResponse createNewProduct(ProductDto product);
 
-    Product updateAProduct(ProductDtoUpdate productDtoUpdate);
+    ProductDtoResponse updateAProduct(ProductDto productDto);
 
-    void deleteAProduct(int id);
+    ProductDtoResponse deleteAProduct(int id);
 
-    List<Product> getAllProductsByCategoryId(int id);
+    List<ProductDtoResponse> getAllProductsByCategoryId(int id);
 
-    ProductDto getProductById(int id);
+    ProductDtoResponse getProductById(int id);
 
-    List<Product> getProductByName(String searchName);
+    List<ProductDtoResponse> getProductByName(String searchName);
 }

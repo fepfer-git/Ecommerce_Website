@@ -1,8 +1,9 @@
-package com.example.ecommerce_website.services;
+package com.example.ecommerce_website.services.impl;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
+import com.example.ecommerce_website.services.interfaces.IStorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +16,7 @@ import java.io.IOException;
 
 @Slf4j
 @Service
-public class StorageService {
+public class StorageServiceImpl implements IStorageService {
     @Value("${bucketName}")
     private String bucketName;
     @Autowired

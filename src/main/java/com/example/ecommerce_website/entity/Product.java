@@ -1,10 +1,7 @@
 package com.example.ecommerce_website.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,10 +11,9 @@ import java.util.List;
 @AllArgsConstructor
 @Setter
 @Getter
-
+@Builder
 @Entity
 @Table (name = "product")
-
 public class Product {
     @Id
     @SequenceGenerator(
@@ -52,15 +48,12 @@ public class Product {
 
 
     @OneToMany(mappedBy = "product")
-    @JsonIgnore
     private List<Image> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "product")
-    @JsonIgnore
     private List<ProductDetail> productDetails = new ArrayList<>();
 
     @OneToMany(mappedBy = "product")
-    @JsonIgnore
     private List<Rating> ratings;
 
 }

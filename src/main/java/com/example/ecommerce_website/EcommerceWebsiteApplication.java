@@ -20,6 +20,11 @@ public class EcommerceWebsiteApplication {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    ModelMapper modelMapper(){
+        return new ModelMapper();
+    }
+
 }
 
 
