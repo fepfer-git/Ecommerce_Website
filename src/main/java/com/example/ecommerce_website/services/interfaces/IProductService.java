@@ -1,6 +1,7 @@
 package com.example.ecommerce_website.services.interfaces;
 
 import com.example.ecommerce_website.dto.create.ProductDto;
+import com.example.ecommerce_website.dto.request.ProductDtoRequest;
 import com.example.ecommerce_website.dto.response.ProductDtoResponse;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface IProductService{
 
     List<ProductDtoResponse> getListProductsAvailable();
 
-    ProductDtoResponse createNewProduct(ProductDto product);
+    ProductDtoResponse createNewProduct(ProductDtoRequest product);
 
     ProductDtoResponse updateAProduct(ProductDto productDto);
 

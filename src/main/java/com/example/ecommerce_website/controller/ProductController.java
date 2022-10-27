@@ -1,6 +1,7 @@
 package com.example.ecommerce_website.controller;
 
 import com.example.ecommerce_website.dto.create.ProductDto;
+import com.example.ecommerce_website.dto.request.ProductDtoRequest;
 import com.example.ecommerce_website.dto.response.ProductDtoResponse;
 import com.example.ecommerce_website.entity.Product;
 import com.example.ecommerce_website.services.interfaces.IProductService;
@@ -47,7 +48,7 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ProductDtoResponse> createNewProduct(@Valid @RequestBody ProductDto product) {
+    public ResponseEntity<ProductDtoResponse> createNewProduct(@Valid @RequestBody ProductDtoRequest product) {
         ProductDtoResponse createdProduct = productService.createNewProduct(product);
         return ResponseEntity.ok().body(createdProduct);
     }

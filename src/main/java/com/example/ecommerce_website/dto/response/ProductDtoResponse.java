@@ -17,7 +17,7 @@ public class ProductDtoResponse {
     private String productName;
     private String productDescription;
     private Category category;
-    private List<Image> images;
-    private List<ProductDetail> productDetails;
+    private List<ImageDtoResponse> images;
+    private List<ProductDetailDtoResponse> productDetails;
     private List<Rating> ratings;
 }

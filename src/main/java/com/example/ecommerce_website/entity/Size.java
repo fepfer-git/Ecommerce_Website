@@ -1,5 +1,6 @@
 package com.example.ecommerce_website.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -34,6 +35,7 @@ public class Size {
     @Column(name = "status", nullable = false, columnDefinition = "VARCHAR(20)")
     private String status;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "size")
     private List<ProductDetail> productDetails = new ArrayList<>();
 

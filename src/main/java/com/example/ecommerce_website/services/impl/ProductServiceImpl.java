@@ -1,14 +1,19 @@
 package com.example.ecommerce_website.services.impl;
 
 import com.example.ecommerce_website.dto.create.ProductDto;
+import com.example.ecommerce_website.dto.request.ProductDetailDtoRequest;
+import com.example.ecommerce_website.dto.request.ProductDtoRequest;
 import com.example.ecommerce_website.entity.Category;
 import com.example.ecommerce_website.entity.Product;
 import com.example.ecommerce_website.dto.response.ProductDtoResponse;
+import com.example.ecommerce_website.entity.ProductDetail;
 import com.example.ecommerce_website.exception.NotFoundException;
 import com.example.ecommerce_website.mappers.ObjectMapperUtils;
 import com.example.ecommerce_website.repository.CategoryRepository;
 import com.example.ecommerce_website.repository.ProductRepository;
+import com.example.ecommerce_website.services.interfaces.IProductDetailService;
 import com.example.ecommerce_website.services.interfaces.IProductService;
+import org.modelmapper.internal.asm.commons.JSRInlinerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +28,9 @@ public class ProductServiceImpl implements IProductService {
     private ObjectMapperUtils objectMapperUtils;
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private IProductDetailService productDetailService;
     @Override
     public List<ProductDtoResponse> getListProducts() {
         List<Product> productList = productRepository.findAll();
@@ -36,17 +44,23 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ProductDtoResponse createNewProduct(ProductDto product) {
+    public ProductDtoResponse createNewProduct(ProductDtoRequest product) {
         Optional <Category> category = categoryRepository.findById(product.getCategoryId());
         if(category.isEmpty()){
             throw new NotFoundException("Category not found!");
         }
+
         Product productSave = Product.builder().productDescription(product.getProductDescription())
                 .category(category.get())
                 .productName(product.getProductName())
                 .status("Active")
                 .build();
         ProductDtoResponse savedProduct = objectMapperUtils.map(productRepository.save(productSave), ProductDtoResponse.class);
+
+        for (ProductDetailDtoRequest productDetailDtoRequest: product.getProductDetails()) {
+            productDetailDtoRequest.setProduct(productSave);
+            productDetailService.addNewProductDetail(productDetailDtoRequest);
+        }
         return savedProduct;
     }
 

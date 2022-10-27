@@ -46,10 +46,7 @@ public class Product {
     )
     private Category category;
 
-    @OneToMany(
-            mappedBy = "product",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
-    )
+    @OneToMany(mappedBy = "product")
     private List<Image> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "product")
