@@ -1,6 +1,7 @@
 package com.example.ecommerce_website.services.impl;
 
 import com.example.ecommerce_website.dto.request.ProductDetailDtoRequest;
+import com.example.ecommerce_website.dto.request.ProductDtoRequest;
 import com.example.ecommerce_website.entity.ProductDetail;
 import com.example.ecommerce_website.entity.Size;
 import com.example.ecommerce_website.exception.NotFoundException;
@@ -39,4 +40,21 @@ public class ProductDetailServiceImpl implements IProductDetailService {
                 .size(size).build();
         return objectMapperUtils.map(productDetailRepository.save(productDetailCreate),ProductDetailDtoRequest.class);
     }
+
+    @Override
+    public ProductDetail updateProductDetail(ProductDetailDtoRequest productDetailDtoRequest){
+        ProductDetail productDetailUpdate = productDetailRepository.findById(productDetailDtoRequest.getProductDetailId()).get();
+        if(productDetailUpdate == null){
+            throw new NotFoundException("Product detail is not found!");
+        }
+        if(productDetailDtoRequest.getSizeId() != productDetailUpdate.getSize().getSizeId()){
+            Size newSize = sizeRepository.findById(productDetailDtoRequest.getSizeId()).get();
+            productDetailUpdate.setSize(newSize);
+        }
+        productDetailUpdate.setStock(productDetailDtoRequest.getStock());
+        productDetailUpdate.setPrice(productDetailDtoRequest.getPrice());
+
+        return productDetailRepository.save(productDetailUpdate);
+    }
+
 }

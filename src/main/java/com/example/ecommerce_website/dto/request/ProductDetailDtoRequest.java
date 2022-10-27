@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 @Data
 public class ProductDetailDtoRequest {
+    private int productDetailId;
     private int stock;
     private double price;
     private int sizeId;

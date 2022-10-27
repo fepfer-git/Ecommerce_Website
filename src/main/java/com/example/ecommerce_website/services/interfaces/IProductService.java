@@ -13,7 +13,7 @@ public interface IProductService{
 
     ProductDtoResponse createNewProduct(ProductDtoRequest product);
 
-    ProductDtoResponse updateAProduct(ProductDto productDto);
+    ProductDtoResponse updateAProduct(ProductDtoRequest productDto);
 
     ProductDtoResponse deleteAProduct(int id);
 

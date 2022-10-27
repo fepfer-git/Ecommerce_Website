@@ -10,7 +10,9 @@ import com.example.ecommerce_website.entity.ProductDetail;
 import com.example.ecommerce_website.exception.NotFoundException;
 import com.example.ecommerce_website.mappers.ObjectMapperUtils;
 import com.example.ecommerce_website.repository.CategoryRepository;
+import com.example.ecommerce_website.repository.ProductDetailRepository;
 import com.example.ecommerce_website.repository.ProductRepository;
+import com.example.ecommerce_website.services.interfaces.ICategoryService;
 import com.example.ecommerce_website.services.interfaces.IProductDetailService;
 import com.example.ecommerce_website.services.interfaces.IProductService;
 import org.modelmapper.internal.asm.commons.JSRInlinerAdapter;
@@ -27,10 +29,12 @@ public class ProductServiceImpl implements IProductService {
     @Autowired
     private ObjectMapperUtils objectMapperUtils;
     @Autowired
-    private CategoryRepository categoryRepository;
-
+    private ICategoryService categoryService;
     @Autowired
     private IProductDetailService productDetailService;
+
+    @Autowired
+    private ProductDetailRepository productDetailRepository;
     @Override
     public List<ProductDtoResponse> getListProducts() {
         List<Product> productList = productRepository.findAll();
@@ -45,7 +49,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public ProductDtoResponse createNewProduct(ProductDtoRequest product) {
-        Optional <Category> category = categoryRepository.findById(product.getCategoryId());
+        Optional <Category> category = categoryService.getACategory(product.getCategoryId());
         if(category.isEmpty()){
             throw new NotFoundException("Category not found!");
         }
@@ -66,9 +70,9 @@ public class ProductServiceImpl implements IProductService {
 
     //fix
     @Override
-    public ProductDtoResponse updateAProduct(ProductDto productDtoUpdate) {
+    public ProductDtoResponse updateAProduct(ProductDtoRequest productDtoUpdate) {
         Product updateProduct = productRepository.findById(productDtoUpdate.getProductId()).get();
-        Optional <Category> category = categoryRepository.findById(productDtoUpdate.getCategoryId());
+        Optional <Category> category = categoryService.getACategory(productDtoUpdate.getCategoryId());
         if (updateProduct == null){
             throw new NotFoundException("Product not found!");
         } else if (category.isEmpty()) {
@@ -76,7 +80,10 @@ public class ProductServiceImpl implements IProductService {
         }
         updateProduct.setProductName(productDtoUpdate.getProductName());
         updateProduct.setProductDescription(productDtoUpdate.getProductDescription());
-        updateProduct.setCategory(categoryRepository.findById(productDtoUpdate.getCategoryId()).get());
+        updateProduct.setCategory(category.get());
+        for (ProductDetailDtoRequest productDetail: productDtoUpdate.getProductDetails()) {
+            productDetailService.updateProductDetail(productDetail);
+        }
         productRepository.save(updateProduct);
         return objectMapperUtils.map(updateProduct,ProductDtoResponse.class);
     }

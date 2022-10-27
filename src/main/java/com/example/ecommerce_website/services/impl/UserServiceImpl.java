@@ -1,6 +1,6 @@
 package com.example.ecommerce_website.services.impl;
 
-import com.example.ecommerce_website.dto.create.UserDto;
+import com.example.ecommerce_website.dto.request.UserDtoRequest;
 import com.example.ecommerce_website.dto.response.UserDtoResponse;
 import com.example.ecommerce_website.entity.User;
 import com.example.ecommerce_website.exception.DuplicatedException;
@@ -10,7 +10,6 @@ import com.example.ecommerce_website.repository.UserRepository;
 import com.example.ecommerce_website.services.interfaces.IUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,14 +31,14 @@ public class UserServiceImpl implements IUserService{
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDtoResponse createNewUser(UserDto userDto) {
+    public UserDtoResponse createNewUser(UserDtoRequest userDtoRequest) {
         log.info("Saving new user to the database");
-        User user = objectMapperUtils.map(userDto, User.class);
+        User user = objectMapperUtils.map(userDtoRequest, User.class);
         user.setStatus("Active");
         user.setRole("USER");
-        if (userRepository.findByUserName(userDto.getUserName()) != null) {
+        if (userRepository.findByUserName(userDtoRequest.getUserName()) != null) {
             throw new DuplicatedException("Username is already exist!");
-        } else if (userRepository.findByEmail(userDto.getEmail()) != null) {
+        } else if (userRepository.findByEmail(userDtoRequest.getEmail()) != null) {
             throw new DuplicatedException("Email is already exist!");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));

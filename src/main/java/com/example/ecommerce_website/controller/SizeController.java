@@ -1,9 +1,6 @@
 package com.example.ecommerce_website.controller;
 
-import com.example.ecommerce_website.dto.create.SizeDto;
-import com.example.ecommerce_website.dto.create.UserDto;
-import com.example.ecommerce_website.dto.response.UserDtoResponse;
-import com.example.ecommerce_website.entity.Size;
+import com.example.ecommerce_website.dto.request.SizeDtoRequest;
 import com.example.ecommerce_website.services.interfaces.ISizeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,13 +16,13 @@ public class SizeController {
     @Autowired
     private ISizeService sizeService;
     @PostMapping("/create")
-    public ResponseEntity<SizeDto> saveSize(@Valid @RequestBody SizeDto size){
-        SizeDto createdSize = sizeService.createNewSize(size);
+    public ResponseEntity<SizeDtoRequest> saveSize(@Valid @RequestBody SizeDtoRequest size){
+        SizeDtoRequest createdSize = sizeService.createNewSize(size);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSize);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<SizeDto>> getAllSize(){
+    public ResponseEntity<List<SizeDtoRequest>> getAllSize(){
         return ResponseEntity.ok().body(sizeService.getAllSize());
     }
 }

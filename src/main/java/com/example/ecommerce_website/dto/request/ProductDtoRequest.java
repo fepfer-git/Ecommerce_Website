@@ -12,6 +12,7 @@ import java.util.List;
  */
 @Data
 public class ProductDtoRequest {
+    private int productId;
     private String productName;
     private String productDescription;
     private List<ProductDetailDtoRequest> productDetails;

@@ -1,4 +1,4 @@
-package com.example.ecommerce_website.dto.create;
+package com.example.ecommerce_website.dto.request;
 
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -13,8 +13,8 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
-
+public class UserDtoRequest {
+    private int userId;
     @Length(min = 3, max = 15, message = "Username must be between 3-15 characters!")
     @NotBlank(message = "Username cannot be empty!")
     private String userName;

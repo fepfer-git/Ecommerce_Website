@@ -1,6 +1,6 @@
 package com.example.ecommerce_website.services.impl;
 
-import com.example.ecommerce_website.dto.create.SizeDto;
+import com.example.ecommerce_website.dto.request.SizeDtoRequest;
 import com.example.ecommerce_website.entity.Size;
 import com.example.ecommerce_website.exception.DuplicatedException;
 import com.example.ecommerce_website.mappers.ObjectMapperUtils;
@@ -18,17 +18,17 @@ public class SizeServiceImpl implements ISizeService {
     @Autowired
     private ObjectMapperUtils objectMapperUtils;
     @Override
-    public SizeDto createNewSize(SizeDto size) {
+    public SizeDtoRequest createNewSize(SizeDtoRequest size) {
         Size checkSize = sizeRepository.findBySizeName(size.getSizeName());
         if(checkSize != null && "Inactive" != checkSize.getStatus()){
             throw new DuplicatedException("Size name is already exist!");
         }
         Size savedSize = Size.builder().sizeName(size.getSizeName()).status("Active").build();
-        return objectMapperUtils.map(sizeRepository.save(savedSize),SizeDto.class);
+        return objectMapperUtils.map(sizeRepository.save(savedSize), SizeDtoRequest.class);
     }
 
     @Override
-    public List<SizeDto> getAllSize() {
-        return objectMapperUtils.mapAll(sizeRepository.findAll(),SizeDto.class);
+    public List<SizeDtoRequest> getAllSize() {
+        return objectMapperUtils.mapAll(sizeRepository.findAll(), SizeDtoRequest.class);
     }
 }
