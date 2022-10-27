@@ -2,6 +2,7 @@ package com.example.ecommerce_website.controller;
 
 import com.example.ecommerce_website.dto.create.ProductDto;
 import com.example.ecommerce_website.dto.response.ProductDtoResponse;
+import com.example.ecommerce_website.entity.Product;
 import com.example.ecommerce_website.services.interfaces.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

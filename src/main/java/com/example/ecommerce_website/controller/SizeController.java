@@ -1,10 +1,31 @@
 package com.example.ecommerce_website.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.ecommerce_website.dto.create.SizeDto;
+import com.example.ecommerce_website.dto.create.UserDto;
+import com.example.ecommerce_website.dto.response.UserDtoResponse;
+import com.example.ecommerce_website.entity.Size;
+import com.example.ecommerce_website.services.interfaces.ISizeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/size")
 public class SizeController {
+    @Autowired
+    private ISizeService sizeService;
+    @PostMapping("/create")
+    public ResponseEntity<SizeDto> saveSize(@Valid @RequestBody SizeDto size){
+        SizeDto createdSize = sizeService.createNewSize(size);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdSize);
+    }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<SizeDto>> getAllSize(){
+        return ResponseEntity.ok().body(sizeService.getAllSize());
+    }
 }

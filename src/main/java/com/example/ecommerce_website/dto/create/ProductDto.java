@@ -21,6 +21,6 @@ public class ProductDto {
     private String productName;
 
     private String productDescription;
-    @NotBlank(message = "Category cannot be empty!")
+
     private int categoryId;
 }
