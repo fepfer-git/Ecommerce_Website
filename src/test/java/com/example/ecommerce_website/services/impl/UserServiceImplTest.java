@@ -1,6 +1,6 @@
 package com.example.ecommerce_website.services.impl;
 
-import com.example.ecommerce_website.dto.create.UserDto;
+import com.example.ecommerce_website.dto.request.UserDtoRequest;
 import com.example.ecommerce_website.dto.response.UserDtoResponse;
 import com.example.ecommerce_website.entity.User;
 import com.example.ecommerce_website.exception.DuplicatedException;
@@ -24,22 +24,21 @@ import static org.hamcrest.Matchers.is;
 class UserServiceImplTest {
     private UserRepository userRepository;
     private User user;
-    private UserDto userDto;
+    private UserDtoRequest userDtoRequest;
     private User initialUser;
     private ModelMapper modelMapper;
     private UserServiceImpl userServiceImpl;
-    private ModelMapperConfiguration listMapper;
     private UserDtoResponse userDtoResponse;
     private PasswordEncoder passwordEncoder;
     @Mock
     List<User> userList;
     @Mock
-    List<UserDto> userDtosList;
+    List<UserDtoRequest> userDtosListRequest;
     @BeforeEach
     void setUp() {
         userRepository = mock(UserRepository.class);
         user = mock(User.class);
-        userDto = mock(UserDto.class);
+        userDtoRequest = mock(UserDtoRequest.class);
         initialUser = mock(User.class);
         modelMapper = mock(ModelMapper.class);
         listMapper = mock(ModelMapperConfiguration.class);
@@ -49,12 +48,12 @@ class UserServiceImplTest {
 
     @Test
     void saveUser_WhenDataValid() {
-        when(modelMapper.map(userDto,User.class)).thenReturn(user);
-        when(userRepository.findByUserName(userDto.getUserName())).thenReturn(null);
-        when(userRepository.findByEmail(userDto.getEmail())).thenReturn(null);
+        when(modelMapper.map(userDtoRequest,User.class)).thenReturn(user);
+        when(userRepository.findByUserName(userDtoRequest.getUserName())).thenReturn(null);
+        when(userRepository.findByEmail(userDtoRequest.getEmail())).thenReturn(null);
         when(userRepository.save(user)).thenReturn(user);
         when(modelMapper.map(user,UserDtoResponse.class)).thenReturn(userDtoResponse);
-        UserDtoResponse userResult = userServiceImpl.createNewUser(userDto);
+        UserDtoResponse userResult = userServiceImpl.createNewUser(userDtoRequest);
         assertThat(userResult,is(userDtoResponse));
     }
 
@@ -63,9 +62,9 @@ class UserServiceImplTest {
 
         DuplicatedException thrown = assertThrows(DuplicatedException.class,
                 ()->{
-                    when(modelMapper.map(userDto,User.class)).thenReturn(user);
-                    when(userRepository.findByUserName(userDto.getUserName())).thenReturn(user);
-                    userServiceImpl.createNewUser(userDto);
+                    when(modelMapper.map(userDtoRequest,User.class)).thenReturn(user);
+                    when(userRepository.findByUserName(userDtoRequest.getUserName())).thenReturn(user);
+                    userServiceImpl.createNewUser(userDtoRequest);
 
                 });
         Assertions.assertEquals("Username is already exist!", thrown.getMessage());
@@ -77,10 +76,10 @@ class UserServiceImplTest {
 
         DuplicatedException thrown = assertThrows(DuplicatedException.class,
                 ()->{
-                    when(modelMapper.map(userDto,User.class)).thenReturn(user);
-                    when(userRepository.findByUserName(userDto.getUserName())).thenReturn(null);
-                    when(userRepository.findByEmail(userDto.getEmail())).thenReturn(user);
-                    userServiceImpl.createNewUser(userDto);
+                    when(modelMapper.map(userDtoRequest,User.class)).thenReturn(user);
+                    when(userRepository.findByUserName(userDtoRequest.getUserName())).thenReturn(null);
+                    when(userRepository.findByEmail(userDtoRequest.getEmail())).thenReturn(user);
+                    userServiceImpl.createNewUser(userDtoRequest);
                 });
         Assertions.assertEquals("Email is already exist!", thrown.getMessage());
 

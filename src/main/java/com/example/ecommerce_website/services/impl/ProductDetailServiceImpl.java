@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductDetailServiceImpl implements IProductDetailService {
@@ -28,8 +29,8 @@ public class ProductDetailServiceImpl implements IProductDetailService {
     private ObjectMapperUtils objectMapperUtils;
     @Override
     public ProductDetailDtoRequest addNewProductDetail(ProductDetailDtoRequest productDetailDtoRequest) {
-        Size size = sizeRepository.findById(productDetailDtoRequest.getSizeId()).get();
-        if (size == null) {
+        Optional<Size> size = sizeRepository.findById(productDetailDtoRequest.getSizeId());
+        if (size.isEmpty()) {
             throw new NotFoundException("Size doesn't exist!");
         }
         ProductDetail productDetailCreate = ProductDetail.builder()
@@ -37,7 +38,7 @@ public class ProductDetailServiceImpl implements IProductDetailService {
                 .price(productDetailDtoRequest.getPrice())
                 .stock(productDetailDtoRequest.getStock())
                 .status("Active")
-                .size(size).build();
+                .size(size.get()).build();
         return objectMapperUtils.map(productDetailRepository.save(productDetailCreate),ProductDetailDtoRequest.class);
     }
 
@@ -49,8 +50,11 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         }
 
         if(productDetailDtoRequest.getSizeId() != productDetailUpdate.getSize().getSizeId()){
-            Size newSize = sizeRepository.findById(productDetailDtoRequest.getSizeId()).get();
-            productDetailUpdate.setSize(newSize);
+            Optional <Size> newSize = sizeRepository.findById(productDetailDtoRequest.getSizeId());
+            if(newSize.isEmpty()){
+                throw new NotFoundException("Size with id: "+productDetailDtoRequest.getSizeId() +" doesn't exist!");
+            }
+            productDetailUpdate.setSize(newSize.get());
         }
         productDetailUpdate.setStock(productDetailDtoRequest.getStock());
         productDetailUpdate.setPrice(productDetailDtoRequest.getPrice());
