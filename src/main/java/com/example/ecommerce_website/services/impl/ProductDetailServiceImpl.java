@@ -47,6 +47,7 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         if(productDetailUpdate == null){
             throw new NotFoundException("Product detail is not found!");
         }
+
         if(productDetailDtoRequest.getSizeId() != productDetailUpdate.getSize().getSizeId()){
             Size newSize = sizeRepository.findById(productDetailDtoRequest.getSizeId()).get();
             productDetailUpdate.setSize(newSize);

@@ -14,9 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDtoResponse {
+    private int productId;
     private String productName;
     private String productDescription;
-    private Category category;
+    private CategoryDtoResponse category;
     private List<ImageDtoResponse> images;
     private List<ProductDetailDtoResponse> productDetails;
     private List<Rating> ratings;
