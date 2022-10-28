@@ -1,8 +1,11 @@
 package com.example.ecommerce_website.controller;
 
+import com.example.ecommerce_website.dto.request.CategoryDtoRequest;
+import com.example.ecommerce_website.dto.response.CategoryDtoResponse;
 import com.example.ecommerce_website.entity.Category;
 import com.example.ecommerce_website.services.interfaces.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,18 +23,19 @@ public class CategoryController {
     }
 
     @PostMapping("create")
-    public void createNewCategory(@RequestBody Category category){
-        categoryService.createNewCategory(category);
+    public CategoryDtoResponse createNewCategory(@RequestBody CategoryDtoRequest categoryDtoRequest){
+        return categoryService.createNewCategory(categoryDtoRequest);
     }
 
     @PutMapping("update")
-    public void updateACategory(@RequestBody Category category){
-        categoryService.updateACategory(category);
+    public CategoryDtoResponse updateACategory(@RequestBody CategoryDtoRequest categoryDtoRequest){
+        return categoryService.updateACategory(categoryDtoRequest);
     }
 
     @DeleteMapping(path = "delete/{categoryId}")
-    public void deleteACategory(@PathVariable("categoryId") int id){
+    public ResponseEntity<String> deleteACategory(@PathVariable("categoryId") int id){
         categoryService.deleteACategory(id);
+        return ResponseEntity.ok().body("Delete category with id: "+ id+" successfully!");
     }
 
 

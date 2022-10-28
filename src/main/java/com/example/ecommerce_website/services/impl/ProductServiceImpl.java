@@ -1,21 +1,17 @@
 package com.example.ecommerce_website.services.impl;
 
-import com.example.ecommerce_website.dto.create.ProductDto;
 import com.example.ecommerce_website.dto.request.ProductDetailDtoRequest;
 import com.example.ecommerce_website.dto.request.ProductDtoRequest;
 import com.example.ecommerce_website.entity.Category;
 import com.example.ecommerce_website.entity.Product;
 import com.example.ecommerce_website.dto.response.ProductDtoResponse;
-import com.example.ecommerce_website.entity.ProductDetail;
 import com.example.ecommerce_website.exception.NotFoundException;
 import com.example.ecommerce_website.mappers.ObjectMapperUtils;
-import com.example.ecommerce_website.repository.CategoryRepository;
 import com.example.ecommerce_website.repository.ProductDetailRepository;
 import com.example.ecommerce_website.repository.ProductRepository;
 import com.example.ecommerce_website.services.interfaces.ICategoryService;
 import com.example.ecommerce_website.services.interfaces.IProductDetailService;
 import com.example.ecommerce_website.services.interfaces.IProductService;
-import org.modelmapper.internal.asm.commons.JSRInlinerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

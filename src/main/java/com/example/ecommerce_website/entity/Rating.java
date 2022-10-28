@@ -1,34 +1,57 @@
 package com.example.ecommerce_website.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
-
+@Builder
 @Entity
 @Table(name = "[rating]")
 public class Rating {
 
-    @EmbeddedId
-    RatingKey id;
+    @Id
+    @SequenceGenerator(
+            name = "rating_sequence",
+            sequenceName = "rating_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "rating_sequence"
+    )
+    @Column(name = "rating_id", updatable = false)
+    private int ratingId;
 
     @ManyToOne
-    @MapsId("productId")
-    @JoinColumn(name = "product_id")
-    Product product;
+    @JoinColumn(
+            name = "product_id",
+            nullable = false,
+            referencedColumnName = "product_id",
+            foreignKey = @ForeignKey(name = "product_rating_fk"))
+    private Product product;
 
-    @MapsId("userId")
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    User user;
+    @JoinColumn(
+            name = "user_id",
+            nullable = false,
+            referencedColumnName = "user_id",
+            foreignKey = @ForeignKey(name = "rating_user_fk"))
+    private User user;
 
     @Column(name = "rating", nullable = false, columnDefinition = "INT")
     private int rating;
+
+    @Column(name = "comment", nullable = false, columnDefinition = "TEXT")
+    private String comment;
+
+    @Column(name = "rating_date", nullable = false, columnDefinition = "Date")
+    private Date ratingDate;
+
+    @Column(name = "status", nullable = false, columnDefinition = "VARCHAR(10)")
+    private String status;
 }

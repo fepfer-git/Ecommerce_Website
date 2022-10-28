@@ -1,6 +1,5 @@
 package com.example.ecommerce_website.services.interfaces;
 
-import com.example.ecommerce_website.dto.create.ProductDto;
 import com.example.ecommerce_website.dto.request.ProductDtoRequest;
 import com.example.ecommerce_website.dto.response.ProductDtoResponse;
 

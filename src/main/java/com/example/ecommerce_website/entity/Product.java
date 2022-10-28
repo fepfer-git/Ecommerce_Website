@@ -53,6 +53,6 @@ public class Product {
     private List<ProductDetail> productDetails = new ArrayList<>();
 
     @OneToMany(mappedBy = "product")
-    private List<Rating> ratings;
+    private List<Rating> ratings = new ArrayList<>();
 
 }

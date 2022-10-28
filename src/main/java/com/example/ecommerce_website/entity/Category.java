@@ -1,10 +1,7 @@
 package com.example.ecommerce_website.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Setter
 @Getter
-
+@Builder
 @Entity
 @Table(name = "category")
 public class Category {
