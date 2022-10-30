@@ -14,6 +14,7 @@ import java.io.Serializable;
 @Data
 public class ProductDetailDtoRequest {
     private int productDetailId;
+
     @Min(value = 0, message = "Stock cannot be a negative number!")
     private int stock;
     @Min(value = 0, message = "Price cannot be a negative number!")

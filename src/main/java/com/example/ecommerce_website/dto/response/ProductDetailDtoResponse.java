@@ -9,6 +9,7 @@ import java.io.Serializable;
  */
 @Data
 public class ProductDetailDtoResponse {
+    private int productDetailId;
     private int stock;
     private double price;
     private SizeDtoResponse size;

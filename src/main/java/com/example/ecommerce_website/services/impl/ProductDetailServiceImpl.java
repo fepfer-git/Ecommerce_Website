@@ -62,4 +62,15 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         return productDetailRepository.save(productDetailUpdate);
     }
 
+    @Override
+    public void updateStock(int productDetailId, int quantity) {
+        ProductDetail productDetailFound = productDetailRepository
+                .findById(productDetailId).orElseThrow(
+                        () -> new NotFoundException("Product not found!")
+                );
+        int stockLeft = productDetailFound.getStock() - quantity;
+        productDetailFound.setStock(stockLeft);
+        productDetailRepository.save(productDetailFound);
+    }
+
 }

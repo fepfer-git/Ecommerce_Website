@@ -1,5 +1,6 @@
 package com.example.ecommerce_website.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,6 +28,7 @@ public class Rating {
     @Column(name = "rating_id", updatable = false)
     private int ratingId;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(
             name = "product_id",
@@ -35,6 +37,7 @@ public class Rating {
             foreignKey = @ForeignKey(name = "product_rating_fk"))
     private Product product;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(
             name = "user_id",

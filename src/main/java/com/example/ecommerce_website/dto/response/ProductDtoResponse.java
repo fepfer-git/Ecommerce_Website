@@ -20,5 +20,5 @@ public class ProductDtoResponse {
     private CategoryDtoResponse category;
     private List<ImageDtoResponse> images;
     private List<ProductDetailDtoResponse> productDetails;
-    private List<Rating> ratings;
+    private List<RatingDtoResponse> ratings;
 }

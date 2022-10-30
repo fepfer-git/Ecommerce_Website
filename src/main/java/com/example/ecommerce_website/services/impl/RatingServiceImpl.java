@@ -1,10 +1,10 @@
 package com.example.ecommerce_website.services.impl;
 
-import com.amazonaws.services.pinpoint.model.BadRequestException;
 import com.example.ecommerce_website.dto.RatingDto;
 import com.example.ecommerce_website.entity.Product;
 import com.example.ecommerce_website.entity.Rating;
 import com.example.ecommerce_website.entity.User;
+import com.example.ecommerce_website.exception.BadRequestException;
 import com.example.ecommerce_website.exception.NotFoundException;
 import com.example.ecommerce_website.mappers.ObjectMapperUtils;
 import com.example.ecommerce_website.repository.ProductRepository;
@@ -76,12 +76,11 @@ public class RatingServiceImpl implements IRatingService {
         if (deleteRating == null) {
             throw new NotFoundException("Rating not found!");
         } else if (inactive.equals(deleteRating.getStatus())) {
-            throw new NotFoundException("Rating are already deleted!");
+            throw new BadRequestException("Rating are already deleted!");
         }
         deleteRating.setStatus(inactive);
         ratingRepository.save(deleteRating);
         return objectMapperUtils.map(deleteRating, RatingDto.class);
     }
-
 
 }

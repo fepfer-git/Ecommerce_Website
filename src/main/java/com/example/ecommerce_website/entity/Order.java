@@ -1,9 +1,6 @@
 package com.example.ecommerce_website.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @Setter
 @Getter
-
+@Builder
 @Entity
 @Table(name = "[order]")
 public class Order {
@@ -27,7 +24,7 @@ public class Order {
             strategy = GenerationType.SEQUENCE,
             generator = "order_sequence"
     )
-    @Column(name = "order_id", nullable = false, columnDefinition = "Date")
+    @Column(name = "order_id", nullable = false, columnDefinition = "Int")
     private int orderId;
 
     @Column(name = "order_date", nullable = false, columnDefinition = "Date")
@@ -38,6 +35,9 @@ public class Order {
 
     @Column(name = "phone", nullable = false, columnDefinition = "VARCHAR(12)")
     private String phone;
+
+    @Column(name = "total_price", nullable = false, columnDefinition = "numeric")
+    private double totalPrice;
 
     @Column(name = "status", nullable = false, columnDefinition = "VARCHAR(20)")
     private String status;

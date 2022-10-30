@@ -8,4 +8,5 @@ import java.util.List;
 public interface IProductDetailService {
     ProductDetailDtoRequest addNewProductDetail(ProductDetailDtoRequest productDetailDtoRequest);
     ProductDetail updateProductDetail(ProductDetailDtoRequest productDetailDtoRequest);
+    void updateStock(int productDetailId, int quantity);
 }

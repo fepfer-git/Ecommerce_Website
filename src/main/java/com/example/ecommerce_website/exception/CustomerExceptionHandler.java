@@ -23,7 +23,27 @@ public class CustomerExceptionHandler {
     }
 
     @ExceptionHandler(value = DuplicatedException.class)
-    public ResponseEntity<Object> handleNotFoundException(DuplicatedException ex){
+    public ResponseEntity<Object> handleDuplicatedException(DuplicatedException ex){
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getMessage(),
+                HttpStatus.BAD_REQUEST,
+                ZonedDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponse,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = BadRequestException.class)
+    public ResponseEntity<Object> handleBadRequestException(BadRequestException ex){
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getMessage(),
+                HttpStatus.BAD_REQUEST,
+                ZonedDateTime.now()
+        );
+        return new ResponseEntity<>(errorResponse,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = OutOfStockException.class)
+    public ResponseEntity<Object> handelOutOfStockException(OutOfStockException ex){
         ErrorResponse errorResponse = new ErrorResponse(
                 ex.getMessage(),
                 HttpStatus.BAD_REQUEST,
