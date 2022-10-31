@@ -13,51 +13,51 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping(path = "api/product")
+@RequestMapping(path = "api")
 public class ProductController {
     @Autowired
     private IProductService productService;
 
-    @GetMapping("/all")
+    @GetMapping("/products")
     public List<ProductDtoResponse> getAllProducts() {
         return productService.getListProducts();
     }
 
-    @GetMapping("/available")
+    @GetMapping("/products/available")
     public List<ProductDtoResponse> getAllProductsAvailable() {
         return productService.getListProductsAvailable();
     }
 
-    @GetMapping("/category/{categoryId}")
+    @GetMapping("product/category/{categoryId}")
     public List<ProductDtoResponse> getAllProductsByCategoryId(@PathVariable("categoryId") int id) {
         return productService.getAllProductsByCategoryId(id);
     }
 
-    @GetMapping("/{productId}")
+    @GetMapping("/product/{productId}")
     public ResponseEntity<ProductDtoResponse> getProductById(@PathVariable("productId") int id) {
         ProductDtoResponse productDtoResponse = productService.getProductById(id);
         return ResponseEntity.ok().body(productDtoResponse);
     }
 
-    @GetMapping("/search/{productName}")
+    @GetMapping("/product/search/{productName}")
     public ResponseEntity<List<ProductDtoResponse>> getListProductsByName(@PathVariable("productName") String searchName) {
         List<ProductDtoResponse> products = productService.getProductByName(searchName);
         return ResponseEntity.ok().body(products);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/product")
     public ResponseEntity<ProductDtoResponse> createNewProduct(@Valid @RequestBody ProductDtoRequest product) {
         ProductDtoResponse createdProduct = productService.createNewProduct(product);
         return ResponseEntity.ok().body(createdProduct);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/product")
     public ResponseEntity<ProductDtoResponse> updateAProduct(@Valid @RequestBody ProductDtoRequest productDtoUpdate) {
         return ResponseEntity.status(HttpStatus.OK).body(
                 productService.updateAProduct(productDtoUpdate));
     }
 
-    @DeleteMapping(path = "delete/{productId}")
+    @DeleteMapping(path = "product/{productId}")
     public ResponseEntity<ProductDtoResponse> deleteAProduct(@PathVariable("productId") int id) {
         return ResponseEntity.ok().body(productService.deleteAProduct(id));
     }

@@ -12,7 +12,7 @@ import java.util.Date;
 public class RatingDto {
     private int ratingId;
     private int productId;
-    private int userId;
+    private String userName;
     private int rating;
     private String comment;
     private Date ratingDate;

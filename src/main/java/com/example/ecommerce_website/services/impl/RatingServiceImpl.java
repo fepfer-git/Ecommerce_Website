@@ -5,6 +5,7 @@ import com.example.ecommerce_website.entity.Product;
 import com.example.ecommerce_website.entity.Rating;
 import com.example.ecommerce_website.entity.User;
 import com.example.ecommerce_website.exception.BadRequestException;
+import com.example.ecommerce_website.exception.DuplicatedException;
 import com.example.ecommerce_website.exception.NotFoundException;
 import com.example.ecommerce_website.mappers.ObjectMapperUtils;
 import com.example.ecommerce_website.repository.ProductRepository;
@@ -37,11 +38,16 @@ public class RatingServiceImpl implements IRatingService {
         Product product = productRepository.findById(ratingDto.getProductId()).orElseThrow(
                 () -> new NotFoundException("Product with id: " + ratingDto.getProductId() + " cannot be found!")
         );
-        User user = userRepository.findById(ratingDto.getUserId()).orElseThrow(
-                () -> new NotFoundException("User with id: " + ratingDto.getUserId() + " cannot be found!")
-        );
+        User user = userRepository.findByUserName(ratingDto.getUserName());
+        if (user == null){
+            throw new NotFoundException("User with Username: " + ratingDto.getUserName() + " cannot be found!");
+        }
+        List<Rating> ratingDuplicate = ratingRepository
+                .findRatingByProductProductIdAndUserUserName(ratingDto.getProductId(), ratingDto.getUserName());
 
-
+        if(ratingDuplicate.size() > 0){
+            throw new DuplicatedException("You are already rated this product!");
+        }
 
         Date nowDate = new Date(System.currentTimeMillis());
         Rating newRating = Rating.builder()

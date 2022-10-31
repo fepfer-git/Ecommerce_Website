@@ -16,8 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -38,10 +37,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().anyRequest().permitAll();
 //        http.authorizeRequests()
-//                .antMatchers(GET, "/api/user/**").hasAnyAuthority("ADMIN")
-//                .antMatchers(POST, "/api/user/**").hasAnyAuthority("ADMIN");
-//
-//        http.authorizeRequests().antMatchers(GET, "/api/product/**").hasAnyAuthority("USER");
+//                .antMatchers("/api/user/**").hasAnyAuthority("ADMIN")
+//                .antMatchers(POST, "/api/category/**").hasAnyAuthority("ADMIN")
+//                .antMatchers(PUT, "/api/category/**").hasAnyAuthority("ADMIN")
+//                .antMatchers(DELETE, "/api/category/**").hasAnyAuthority("ADMIN")
+//                .antMatchers(POST, "/api/image/**").hasAnyAuthority("ADMIN")
+//                .antMatchers(POST, "/api/product/**").hasAnyAuthority("ADMIN")
+//                .antMatchers(GET, "/api/product/**").hasAnyAuthority("ADMIN")
+//                .antMatchers(GET, "/api/product/search/**").hasAnyAuthority("ADMIN")
+//                .antMatchers(PUT, "/api/product/**").hasAnyAuthority("ADMIN")
+//                .antMatchers(DELETE, "/api/product/**").hasAnyAuthority("ADMIN");;
+
+
 
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean(), jwtUtil));
         http.addFilterBefore(new CustomAuthorizationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);

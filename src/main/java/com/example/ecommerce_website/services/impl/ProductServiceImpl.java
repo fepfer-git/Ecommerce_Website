@@ -5,6 +5,7 @@ import com.example.ecommerce_website.dto.request.ProductDtoRequest;
 import com.example.ecommerce_website.entity.Category;
 import com.example.ecommerce_website.entity.Product;
 import com.example.ecommerce_website.dto.response.ProductDtoResponse;
+import com.example.ecommerce_website.exception.DuplicatedException;
 import com.example.ecommerce_website.exception.NotFoundException;
 import com.example.ecommerce_website.mappers.ObjectMapperUtils;
 import com.example.ecommerce_website.repository.ProductDetailRepository;
@@ -49,7 +50,9 @@ public class ProductServiceImpl implements IProductService {
         if(category.isEmpty()){
             throw new NotFoundException("Category not found!");
         }
-
+        if(productRepository.findProductsByProductNameIgnoreCase(product.getProductName()).size() > 0){
+            throw new DuplicatedException("A product with this product name is already exist!");
+        }
         Product productSave = Product.builder().productDescription(product.getProductDescription())
                 .category(category.get())
                 .productName(product.getProductName())

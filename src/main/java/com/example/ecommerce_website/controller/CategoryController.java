@@ -12,27 +12,27 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/category")
+@RequestMapping(path = "api")
 public class CategoryController {
     @Autowired
     private ICategoryService categoryService;
 
-    @GetMapping("all")
+    @GetMapping("categories")
     public List<Category> getCategories(){
         return categoryService.getListCategories();
     }
 
-    @PostMapping("create")
-    public CategoryDtoResponse createNewCategory(@RequestBody CategoryDtoRequest categoryDtoRequest){
+    @PostMapping("/category")
+    public CategoryDtoResponse createNewCategory(@Valid @RequestBody CategoryDtoRequest categoryDtoRequest){
         return categoryService.createNewCategory(categoryDtoRequest);
     }
 
-    @PutMapping("update")
-    public CategoryDtoResponse updateACategory(@RequestBody CategoryDtoRequest categoryDtoRequest){
+    @PutMapping("/category")
+    public CategoryDtoResponse updateACategory(@Valid @RequestBody CategoryDtoRequest categoryDtoRequest){
         return categoryService.updateACategory(categoryDtoRequest);
     }
 
-    @DeleteMapping(path = "delete/{categoryId}")
+    @DeleteMapping(path = "category/{categoryId}")
     public ResponseEntity<String> deleteACategory(@PathVariable("categoryId") int id){
         categoryService.deleteACategory(id);
         return ResponseEntity.ok().body("Delete category with id: "+ id+" successfully!");

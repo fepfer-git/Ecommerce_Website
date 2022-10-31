@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/rate")
+@RequestMapping(path = "api/rating")
 public class RatingController {
 
     @Autowired
     private IRatingService ratingService;
 
-    @PostMapping("/add")
+    @PostMapping()
     public ResponseEntity<RatingDto> newRating(@RequestBody RatingDto ratingDto){
         return ResponseEntity.ok().body(ratingService.newRating(ratingDto));
     }
@@ -26,7 +26,7 @@ public class RatingController {
         return ratingService.getRatingsByProduct(productId);
     }
 
-    @DeleteMapping(path = "/delete/{ratingId}")
+    @DeleteMapping(path = "/{ratingId}")
     public ResponseEntity<RatingDto> deleteARating(@PathVariable("ratingId") int id) {
 
         return ResponseEntity.ok().body(ratingService.deleteARating(id));

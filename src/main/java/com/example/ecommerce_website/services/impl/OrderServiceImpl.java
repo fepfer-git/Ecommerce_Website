@@ -3,14 +3,13 @@ package com.example.ecommerce_website.services.impl;
 import com.example.ecommerce_website.dto.request.OrderDetailDtoRequest;
 import com.example.ecommerce_website.dto.request.OrderDtoRequest;
 import com.example.ecommerce_website.dto.response.OrderDtoResponse;
-import com.example.ecommerce_website.entity.Order;
-import com.example.ecommerce_website.entity.OrderDetail;
-import com.example.ecommerce_website.entity.ProductDetail;
+import com.example.ecommerce_website.entity.*;
 import com.example.ecommerce_website.exception.NotFoundException;
 import com.example.ecommerce_website.exception.OutOfStockException;
 import com.example.ecommerce_website.mappers.ObjectMapperUtils;
 import com.example.ecommerce_website.repository.OrderRepository;
 import com.example.ecommerce_website.repository.ProductDetailRepository;
+import com.example.ecommerce_website.repository.ProductRepository;
 import com.example.ecommerce_website.repository.UserRepository;
 import com.example.ecommerce_website.services.interfaces.IOrderDetailService;
 import com.example.ecommerce_website.services.interfaces.IOrderService;
@@ -32,6 +31,8 @@ public class OrderServiceImpl implements IOrderService {
     private UserRepository userRepository;
     @Autowired
     private ProductDetailRepository productDetailRepository;
+    @Autowired
+    private ProductRepository productRepository;
     @Override
     public OrderDtoRequest createNewOrder(OrderDtoRequest orderDtoRequest) {
         double totalOrderPrice = 0;
@@ -39,7 +40,8 @@ public class OrderServiceImpl implements IOrderService {
         for (OrderDetailDtoRequest orderDetailDtoRequest : orderDetails) {
             ProductDetail productDetail = productDetailRepository.findById(orderDetailDtoRequest.getProductDetailId()).get();
             if (productDetail.getStock() < orderDetailDtoRequest.getQuantity()){
-                throw new OutOfStockException("Product out of stock!");
+                Product product = productRepository.findById(productDetail.getProduct().getProductId()).get();
+                throw new OutOfStockException("Product '" + product.getProductName() + "' with size '" + productDetail.getSize().getSizeName() + "' is only have " + productDetail.getStock() +" items left!");
             }
             totalOrderPrice += orderDetailService.getPrice(orderDetailDtoRequest);
         }
@@ -47,6 +49,10 @@ public class OrderServiceImpl implements IOrderService {
 
         String status = "Active";
         Date nowDate = new Date(System.currentTimeMillis());
+        User orderUser = userRepository.findByUserName(orderDtoRequest.getUserName());
+        if(orderUser == null){
+            throw new NotFoundException("User is not found!");
+        }
 
         Order order = Order.builder()
                 .orderAddress(orderDtoRequest.getOrderAddress())
@@ -54,7 +60,7 @@ public class OrderServiceImpl implements IOrderService {
                 .status(status)
                 .totalPrice(totalOrderPrice)
                 .phone(orderDtoRequest.getPhone())
-                .user(userRepository.findByUserName(orderDtoRequest.getUserName()))
+                .user(orderUser)
                 .build();
 
         Order savedOrder = orderRepository.save(order);
