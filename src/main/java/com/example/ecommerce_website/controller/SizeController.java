@@ -11,17 +11,18 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/size")
+
+@RequestMapping(path = "api")
 public class SizeController {
     @Autowired
     private ISizeService sizeService;
-    @PostMapping("/create")
+    @PostMapping("/size")
     public ResponseEntity<SizeDtoRequest> saveSize(@Valid @RequestBody SizeDtoRequest size){
         SizeDtoRequest createdSize = sizeService.createNewSize(size);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdSize);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/sizes")
     public ResponseEntity<List<SizeDtoRequest>> getAllSize(){
         return ResponseEntity.ok().body(sizeService.getAllSize());
     }
