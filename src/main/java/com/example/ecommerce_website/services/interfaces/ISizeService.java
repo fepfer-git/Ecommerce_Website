@@ -8,4 +8,6 @@ public interface ISizeService {
     SizeDtoRequest createNewSize(SizeDtoRequest size);
 
     List<SizeDtoRequest> getAllSize();
+
+    void deleteASize(int id);
 }

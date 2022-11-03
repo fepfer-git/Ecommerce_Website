@@ -3,11 +3,14 @@ package com.example.ecommerce_website.services.impl;
 import com.example.ecommerce_website.dto.request.CategoryDtoRequest;
 import com.example.ecommerce_website.dto.response.CategoryDtoResponse;
 import com.example.ecommerce_website.entity.Category;
+import com.example.ecommerce_website.exception.BadRequestException;
 import com.example.ecommerce_website.exception.DuplicatedException;
 import com.example.ecommerce_website.exception.NotFoundException;
 import com.example.ecommerce_website.mappers.ObjectMapperUtils;
 import com.example.ecommerce_website.repository.CategoryRepository;
+import com.example.ecommerce_website.repository.ProductRepository;
 import com.example.ecommerce_website.services.interfaces.ICategoryService;
+import com.example.ecommerce_website.services.interfaces.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +24,8 @@ public class CategoryServiceImpl implements ICategoryService {
     private CategoryRepository categoryRepository;
     @Autowired
     private ObjectMapperUtils objectMapperUtils;
+    @Autowired
+    private ProductRepository productRepository;
     @Override
     public List<Category> getListCategories() {
         return categoryRepository.findCategoriesByStatus("Active");
@@ -55,6 +60,9 @@ public class CategoryServiceImpl implements ICategoryService {
         Optional<Category> deleteCategory = categoryRepository.findById(id);
         if(deleteCategory.isEmpty()){
             throw new NotFoundException("Category doesn't exist!");
+        }
+        if(productRepository.findProductsByCategory_CategoryId(id).size() > 0){
+            throw new BadRequestException("Still have product belong to this category. Delete fail!");
         }
         deleteCategory.get().setStatus("Inactive");
         categoryRepository.save(deleteCategory.get());

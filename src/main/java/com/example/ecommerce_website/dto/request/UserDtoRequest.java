@@ -23,6 +23,9 @@ public class UserDtoRequest {
     @Length(min = 6, max = 20, message = "Password must be between 6-20 characters!")
     @NotBlank(message = "Password cannot be empty!")
     private String password;
+    @Length(min = 6, max = 20, message = "Password must be between 6-20 characters!")
+    @NotBlank(message = "Confirm password cannot be empty!")
+    private String confirmPassword;
     @Email(message = "Email is not valid!")
     @NotBlank(message = "Email cannot be empty!")
     private String email;

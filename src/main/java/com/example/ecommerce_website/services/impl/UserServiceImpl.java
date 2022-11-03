@@ -3,6 +3,7 @@ package com.example.ecommerce_website.services.impl;
 import com.example.ecommerce_website.dto.request.UserDtoRequest;
 import com.example.ecommerce_website.dto.response.UserDtoResponse;
 import com.example.ecommerce_website.entity.User;
+import com.example.ecommerce_website.exception.BadRequestException;
 import com.example.ecommerce_website.exception.DuplicatedException;
 import com.example.ecommerce_website.exception.NotFoundException;
 import com.example.ecommerce_website.mappers.ObjectMapperUtils;
@@ -40,7 +41,10 @@ public class UserServiceImpl implements IUserService{
             throw new DuplicatedException("Username is already exist!");
         } else if (userRepository.findByEmail(userDtoRequest.getEmail()) != null) {
             throw new DuplicatedException("Email is already exist!");
+        }else if(!userDtoRequest.getPassword().equals(userDtoRequest.getConfirmPassword())){
+            throw new BadRequestException("Confirm password is incorrect!");
         }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
         return objectMapperUtils.map(savedUser, UserDtoResponse.class);

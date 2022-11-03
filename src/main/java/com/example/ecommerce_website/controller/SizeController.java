@@ -26,4 +26,11 @@ public class SizeController {
     public ResponseEntity<List<SizeDtoRequest>> getAllSize(){
         return ResponseEntity.ok().body(sizeService.getAllSize());
     }
+
+    @DeleteMapping("/size/{sizeId}")
+    public ResponseEntity<String> deleteASize(@PathVariable("sizeId") int id){
+        sizeService.deleteASize(id);
+        return ResponseEntity.ok().body("Delete size with id: "+ id+" successfully!");
+    }
+
 }
