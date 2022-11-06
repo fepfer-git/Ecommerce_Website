@@ -10,6 +10,7 @@ import java.util.Date;
  */
 @Data
 public class RatingDto {
+    private String fullName;
     private int ratingId;
     private int productId;
     private String userName;

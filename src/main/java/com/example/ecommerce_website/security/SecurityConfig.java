@@ -1,5 +1,6 @@
 package com.example.ecommerce_website.security;
 
+import com.example.ecommerce_website.repository.UserRepository;
 import com.example.ecommerce_website.security.JwtUtil;
 import com.example.ecommerce_website.security.filter.CustomAuthenticationFilter;
 import com.example.ecommerce_website.security.filter.CustomAuthorizationFilter;
@@ -26,6 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtUtil jwtUtil;
 
+    private final UserRepository userRepository;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
@@ -40,11 +43,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
 
                 .antMatchers(HttpMethod.POST, "/api/category").hasAnyAuthority("ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/categories").permitAll()
                 .antMatchers(HttpMethod.PUT, "/api/category").hasAnyAuthority("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/category/**").hasAnyAuthority("ADMIN")
                 .antMatchers(HttpMethod.POST, "/api/image/upload/**").hasAnyAuthority("ADMIN")
                 .antMatchers(HttpMethod.POST, "/api/product").hasAnyAuthority("ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/products/available").hasAnyAuthority("ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/products/available").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/products").hasAnyAuthority("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/api/product").hasAnyAuthority("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/product/**").hasAnyAuthority("ADMIN")
@@ -67,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().anyRequest().authenticated();
 
 
-        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean(), jwtUtil));
+        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean(), jwtUtil, userRepository));
         http.addFilterBefore(new CustomAuthorizationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
     }
 

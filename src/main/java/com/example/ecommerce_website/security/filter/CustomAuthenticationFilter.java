@@ -1,5 +1,6 @@
 package com.example.ecommerce_website.security.filter;
 
+import com.example.ecommerce_website.repository.UserRepository;
 import com.example.ecommerce_website.security.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +25,14 @@ import java.util.Map;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final Long accessTokenExpiration = 60 * 60 * 1000L;
+    private final UserRepository userRepository;
+    private final Long accessTokenExpiration = 1 * 60 * 60 * 1000L;
     private final Long refreshTokenExpiration = 12 * 60 * 60 * 1000L;
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -45,6 +48,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         User user = (User) authentication.getPrincipal();
+
         String access_token = jwtUtil.generateToken(user, accessTokenExpiration);
 
         String refresh_token = jwtUtil.generateToken(user, refreshTokenExpiration);
@@ -52,9 +56,17 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         response.setHeader("access_token", access_token);
         response.setHeader("refresh_token", refresh_token);
 
+        String userRole = userRepository.findByUserName(user.getUsername()).getRole();
+        String userFullName = userRepository.findByUserName(user.getUsername()).getFullName();
+
+
         Map<String, String> tokens = new HashMap<>();
         tokens.put("access_token", access_token);
         tokens.put("refresh_token", refresh_token);
+        tokens.put("user_name", userFullName);
+        tokens.put("user_role", userRole);
+        tokens.put("expiration",String.valueOf (System.currentTimeMillis() + accessTokenExpiration));
+
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }
