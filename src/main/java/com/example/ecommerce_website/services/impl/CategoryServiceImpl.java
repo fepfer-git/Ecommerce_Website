@@ -34,12 +34,19 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public CategoryDtoResponse createNewCategory(CategoryDtoRequest categoryDtoRequest) {
         String active = "Active";
-        if (categoryRepository.findCategoryByCategoryNameIgnoreCase(categoryDtoRequest.getCategoryName()) != null){
+        Category foundCategory = categoryRepository.findCategoryByCategoryNameIgnoreCase(categoryDtoRequest.getCategoryName());
+        Category savedCategory;
+        if (foundCategory != null && "Active".equals(foundCategory.getStatus())){
             throw new DuplicatedException("Category name is already exist!");
         }
-        Category category = Category.builder().categoryName(categoryDtoRequest.getCategoryName()).status(active).build();
+        if(foundCategory != null && !"Active".equals(foundCategory.getStatus())){
+            foundCategory.setStatus("Active");
+            savedCategory = foundCategory;
+        }else{
+            savedCategory = Category.builder().categoryName(categoryDtoRequest.getCategoryName()).status(active).build();
+        }
 
-        return objectMapperUtils.map(categoryRepository.save(category), CategoryDtoResponse.class);
+        return objectMapperUtils.map(categoryRepository.save(savedCategory), CategoryDtoResponse.class);
     }
 
     @Override

@@ -28,16 +28,23 @@ public class SizeServiceImpl implements ISizeService {
     @Override
     public SizeDtoRequest createNewSize(SizeDtoRequest size) {
         Size checkSize = sizeRepository.findBySizeName(size.getSizeName());
-        if(checkSize != null && "Inactive" != checkSize.getStatus()){
+        Size savedSize;
+        if(checkSize != null && checkSize.getStatus().equals("Active")){
             throw new DuplicatedException("Size name is already exist!");
         }
-        Size savedSize = Size.builder().sizeName(size.getSizeName()).status("Active").build();
+        if(checkSize != null && !checkSize.getStatus().equals("Active") ){
+            checkSize.setStatus("Active");
+            savedSize = checkSize;
+        }else{
+            savedSize = Size.builder().sizeName(size.getSizeName()).status("Active").build();
+        }
         return objectMapperUtils.map(sizeRepository.save(savedSize), SizeDtoRequest.class);
     }
 
     @Override
     public List<SizeDtoRequest> getAllSize() {
-        return objectMapperUtils.mapAll(sizeRepository.findAll(), SizeDtoRequest.class);
+        List<Size> sizeList = sizeRepository.findSizeByStatus("Active");
+        return objectMapperUtils.mapAll(sizeList, SizeDtoRequest.class);
     }
 
     @Override
