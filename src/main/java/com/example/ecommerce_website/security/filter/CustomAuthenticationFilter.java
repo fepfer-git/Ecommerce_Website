@@ -63,7 +63,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         Map<String, String> tokens = new HashMap<>();
         tokens.put("access_token", access_token);
         tokens.put("refresh_token", refresh_token);
-        tokens.put("user_name", userFullName);
+        tokens.put("user_full_name", userFullName);
+        tokens.put("user_name", user.getUsername());
         tokens.put("user_role", userRole);
         tokens.put("expiration",String.valueOf (System.currentTimeMillis() + accessTokenExpiration));
 

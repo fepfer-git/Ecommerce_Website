@@ -28,9 +28,9 @@ public class ProductController {
         return productService.getListProductsAvailable();
     }
 
-    @GetMapping("product/category/{categoryId}")
-    public List<ProductDtoResponse> getAllProductsByCategoryId(@PathVariable("categoryId") int id) {
-        return productService.getAllProductsByCategoryId(id);
+    @GetMapping("/products?category={categoryId}")
+    public List<ProductDtoResponse> getAllProductsByCategoryId(@PathVariable("categoryId") int categoryId) {
+        return productService.getAllProductsByCategoryId(categoryId);
     }
 
     @GetMapping("/product/{productId}")
@@ -39,9 +39,9 @@ public class ProductController {
         return ResponseEntity.ok().body(productDtoResponse);
     }
 
-    @GetMapping("/product/search/{productName}")
-    public ResponseEntity<List<ProductDtoResponse>> getListProductsByName(@PathVariable("productName") String searchName) {
-        List<ProductDtoResponse> products = productService.getProductByName(searchName);
+    @GetMapping("/product")
+    public ResponseEntity<List<ProductDtoResponse>> getListProductsByName(@RequestParam String search) {
+        List<ProductDtoResponse> products = productService.getProductByName(search);
         return ResponseEntity.ok().body(products);
     }
 

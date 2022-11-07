@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements IOrderService {
@@ -38,10 +39,14 @@ public class OrderServiceImpl implements IOrderService {
         double totalOrderPrice = 0;
         List<OrderDetailDtoRequest> orderDetails = orderDtoRequest.getOrderDetails();
         for (OrderDetailDtoRequest orderDetailDtoRequest : orderDetails) {
-            ProductDetail productDetail = productDetailRepository.findById(orderDetailDtoRequest.getProductDetailId()).get();
-            if (productDetail.getStock() < orderDetailDtoRequest.getQuantity()){
-                Product product = productRepository.findById(productDetail.getProduct().getProductId()).get();
-                throw new OutOfStockException("Product '" + product.getProductName() + "' with size '" + productDetail.getSize().getSizeName() + "' is only have " + productDetail.getStock() +" items left!");
+
+            Optional<ProductDetail>  productDetail = productDetailRepository.findById(orderDetailDtoRequest.getProductDetailId());
+            if(productDetail.isEmpty()){
+                throw new NotFoundException("ProductDetail with id: "+ orderDetailDtoRequest.getProductDetailId() + " cannot be found!");
+            }
+            if (productDetail.get().getStock() < orderDetailDtoRequest.getQuantity()){
+                Product product = productRepository.findById(productDetail.get().getProduct().getProductId()).orElse(new Product());
+                throw new OutOfStockException("Product '" + product.getProductName() + "' with size '" + productDetail.get().getSize().getSizeName() + "' is only have " + productDetail.get().getStock() +" items left!");
             }
             totalOrderPrice += orderDetailService.getPrice(orderDetailDtoRequest);
         }

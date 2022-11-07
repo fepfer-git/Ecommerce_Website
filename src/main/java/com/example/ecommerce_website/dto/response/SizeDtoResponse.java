@@ -11,4 +11,5 @@ import java.io.Serializable;
 public class SizeDtoResponse{
     private int sizeId;
     private String sizeName;
+    private String status;
 }

@@ -9,5 +9,6 @@ public class SizeDtoRequest {
     private int sizeId;
     @NotBlank(message = "Size name cannot be empty!")
     private String sizeName;
+    private String status;
 
 }

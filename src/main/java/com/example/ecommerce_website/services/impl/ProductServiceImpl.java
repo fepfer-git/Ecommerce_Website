@@ -70,20 +70,20 @@ public class ProductServiceImpl implements IProductService {
     //fix
     @Override
     public ProductDtoResponse updateAProduct(ProductDtoRequest productDtoUpdate) {
-        Product updateProduct = productRepository.findById(productDtoUpdate.getProductId()).get();
+        Optional<Product> updateProduct = productRepository.findById(productDtoUpdate.getProductId());
         Optional <Category> category = categoryService.getACategory(productDtoUpdate.getCategoryId());
-        if (updateProduct == null){
+        if (updateProduct.isEmpty()){
             throw new NotFoundException("Product not found!");
         } else if (category.isEmpty()) {
             throw new NotFoundException("Category not found!");
         }
-        updateProduct.setProductName(productDtoUpdate.getProductName());
-        updateProduct.setProductDescription(productDtoUpdate.getProductDescription());
-        updateProduct.setCategory(category.get());
+        updateProduct.get().setProductName(productDtoUpdate.getProductName());
+        updateProduct.get().setProductDescription(productDtoUpdate.getProductDescription());
+        updateProduct.get().setCategory(category.get());
         for (ProductDetailDtoRequest productDetail: productDtoUpdate.getProductDetails()) {
             productDetailService.updateProductDetail(productDetail);
         }
-        productRepository.save(updateProduct);
+        productRepository.save(updateProduct.get());
         return objectMapperUtils.map(updateProduct,ProductDtoResponse.class);
     }
 
@@ -111,10 +111,13 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public ProductDtoResponse getProductById(int id) {
         Optional<Product> product = productRepository.findById(id);
+
         if (product.isEmpty()) {
-            throw new NotFoundException("There is not any product with id: " + id);
+            return new ProductDtoResponse();
+        }else{
+            return objectMapperUtils.map(product.get(), ProductDtoResponse.class);
+
         }
-        return objectMapperUtils.map(product.get(), ProductDtoResponse.class);
     }
 
     @Override

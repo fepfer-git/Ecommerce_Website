@@ -21,4 +21,5 @@ public class ProductDtoResponse {
     private List<ImageDtoResponse> images;
     private List<ProductDetailDtoResponse> productDetails;
     private List<RatingDtoResponse> ratings;
+    private String status;
 }
