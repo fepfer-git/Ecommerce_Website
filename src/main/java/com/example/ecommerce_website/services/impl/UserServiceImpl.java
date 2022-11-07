@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,12 +64,15 @@ public class UserServiceImpl implements IUserService{
 
     @Override
     public List<UserDtoResponse> getUsers() {
-        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findUsersByRole("USER");
         if (users.isEmpty()) {
-            throw new NotFoundException("There is nothing here!");
+            List<UserDtoResponse> userEmptyList = new ArrayList<>();
+            return userEmptyList;
+        }else{
+            List<UserDtoResponse> userDtoResponseList = objectMapperUtils.mapAll(users,UserDtoResponse.class);
+            return userDtoResponseList;
         }
-        List<UserDtoResponse> userDtoResponseList = objectMapperUtils.mapAll(users,UserDtoResponse.class);
-        return userDtoResponseList;
+
     }
 
 }
