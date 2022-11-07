@@ -2,6 +2,7 @@ package com.example.ecommerce_website.services.impl;
 
 import com.example.ecommerce_website.dto.request.ProductDetailDtoRequest;
 import com.example.ecommerce_website.dto.request.ProductDtoRequest;
+import com.example.ecommerce_website.dto.response.ProductDetailDtoResponse;
 import com.example.ecommerce_website.entity.ProductDetail;
 import com.example.ecommerce_website.entity.Size;
 import com.example.ecommerce_website.exception.NotFoundException;
@@ -72,5 +73,17 @@ public class ProductDetailServiceImpl implements IProductDetailService {
         productDetailFound.setStock(stockLeft);
         productDetailRepository.save(productDetailFound);
     }
+
+    @Override
+    public ProductDetailDtoResponse getProductDetailById(int id) {
+        Optional<ProductDetail> productDetailFound = productDetailRepository.findById(id);
+        if(productDetailFound.isEmpty()){
+            return new ProductDetailDtoResponse();
+        }else{
+            return objectMapperUtils.map(productDetailFound.get(), ProductDetailDtoResponse.class);
+        }
+
+    }
+
 
 }
