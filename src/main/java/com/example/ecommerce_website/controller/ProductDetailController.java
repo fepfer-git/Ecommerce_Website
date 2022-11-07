@@ -1,6 +1,7 @@
 package com.example.ecommerce_website.controller;
 
 import com.example.ecommerce_website.dto.response.ProductDetailDtoResponse;
+import com.example.ecommerce_website.dto.response.ProductDetailDtoResponseWithProduct;
 import com.example.ecommerce_website.dto.response.ProductDtoResponse;
 import com.example.ecommerce_website.entity.ProductDetail;
 import com.example.ecommerce_website.services.interfaces.IProductDetailService;
@@ -20,9 +21,9 @@ public class ProductDetailController {
     private IProductDetailService productDetailService;
 
     @GetMapping("/{productDetailId}")
-    public ResponseEntity<ProductDetailDtoResponse> getProductDetailById(@PathVariable("productDetailId") int id) {
-        ProductDetailDtoResponse productDetailDtoResponse = productDetailService.getProductDetailById(id);
-        return ResponseEntity.ok().body(productDetailDtoResponse);
+    public ResponseEntity<ProductDetailDtoResponseWithProduct> getProductDetailById(@PathVariable("productDetailId") int id) {
+        ProductDetailDtoResponseWithProduct productDetail = productDetailService.getProductDetailById(id);
+        return ResponseEntity.ok().body(productDetail);
     }
 
 }
