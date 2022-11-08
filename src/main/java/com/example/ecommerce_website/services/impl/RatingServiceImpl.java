@@ -1,6 +1,7 @@
 package com.example.ecommerce_website.services.impl;
 
 import com.example.ecommerce_website.dto.RatingDto;
+import com.example.ecommerce_website.dto.response.RatingDtoResponse;
 import com.example.ecommerce_website.entity.Product;
 import com.example.ecommerce_website.entity.Rating;
 import com.example.ecommerce_website.entity.User;
@@ -66,13 +67,13 @@ public class RatingServiceImpl implements IRatingService {
     }
 
     @Override
-    public List<RatingDto> getRatingsByProduct(int productId) {
+    public List<RatingDtoResponse> getRatingsByProduct(int productId) {
         String active = "Active";
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new NotFoundException("Product with product id: " + productId + " doesn't exist!")
         );
         List<Rating> ratingList = ratingRepository.findRatingsByProductProductIdAndStatus(product.getProductId(), active);
-        return ObjectMapperUtils.mapAll(ratingList, RatingDto.class);
+        return ObjectMapperUtils.mapAll(ratingList, RatingDtoResponse.class);
     }
 
     @Override

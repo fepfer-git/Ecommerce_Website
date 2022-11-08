@@ -11,6 +11,8 @@ import java.util.Date;
 @Data
 public class RatingDtoResponse {
     private int ratingId;
+    private int productId;
+
     private UserDtoResponse user;
     private int rating;
     private String comment;
