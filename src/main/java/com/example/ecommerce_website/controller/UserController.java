@@ -25,11 +25,10 @@ public class UserController {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
-    @GetMapping("user/{userId}")
-    public ResponseEntity<UserDtoResponse>getUser(@PathVariable int userId){
-        return ResponseEntity.ok().body(userService.getUser(userId));
+    @GetMapping("user/{userName}")
+    public ResponseEntity<UserDtoResponse>getUser(@PathVariable String userName){
+        return ResponseEntity.ok().body(userService.getUser(userName));
     }
-
     @PostMapping("user")
     public ResponseEntity<UserDtoResponse> saveUser(@Valid @RequestBody UserDtoRequest userDtoRequest){
         UserDtoResponse userDtoResponse = userService.createNewUser(userDtoRequest);

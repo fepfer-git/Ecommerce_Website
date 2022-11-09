@@ -52,10 +52,10 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
-    public UserDtoResponse getUser(int userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            UserDtoResponse userDtoResponse = objectMapperUtils.map(user.get(), UserDtoResponse.class);
+    public UserDtoResponse getUser(String userName) {
+        User user = userRepository.findByUserName(userName);
+        if (user != null) {
+            UserDtoResponse userDtoResponse = objectMapperUtils.map(user, UserDtoResponse.class);
             return userDtoResponse;
         } else {
             throw new NotFoundException("There is no user with this user ID!");
