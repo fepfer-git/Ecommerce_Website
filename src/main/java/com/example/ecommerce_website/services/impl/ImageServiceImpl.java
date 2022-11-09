@@ -7,9 +7,11 @@ import com.example.ecommerce_website.repository.ImageRepository;
 import com.example.ecommerce_website.repository.ProductRepository;
 import com.example.ecommerce_website.services.interfaces.IImageService;
 import com.example.ecommerce_website.services.interfaces.IProductService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@AllArgsConstructor
 @Service
 public class ImageServiceImpl implements IImageService {
     @Autowired
