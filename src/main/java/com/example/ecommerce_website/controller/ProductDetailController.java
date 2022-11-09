@@ -1,11 +1,7 @@
 package com.example.ecommerce_website.controller;
 
-import com.example.ecommerce_website.dto.response.ProductDetailDtoResponse;
 import com.example.ecommerce_website.dto.response.ProductDetailDtoResponseWithProduct;
-import com.example.ecommerce_website.dto.response.ProductDtoResponse;
-import com.example.ecommerce_website.entity.ProductDetail;
 import com.example.ecommerce_website.services.interfaces.IProductDetailService;
-import com.example.ecommerce_website.services.interfaces.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
