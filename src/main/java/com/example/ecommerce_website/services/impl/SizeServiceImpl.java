@@ -1,7 +1,6 @@
 package com.example.ecommerce_website.services.impl;
 
 import com.example.ecommerce_website.dto.request.SizeDtoRequest;
-import com.example.ecommerce_website.entity.Category;
 import com.example.ecommerce_website.entity.Size;
 import com.example.ecommerce_website.exception.BadRequestException;
 import com.example.ecommerce_website.exception.DuplicatedException;
@@ -9,15 +8,17 @@ import com.example.ecommerce_website.exception.NotFoundException;
 import com.example.ecommerce_website.mappers.ObjectMapperUtils;
 import com.example.ecommerce_website.repository.ProductDetailRepository;
 import com.example.ecommerce_website.repository.SizeRepository;
-import com.example.ecommerce_website.services.interfaces.IProductService;
 import com.example.ecommerce_website.services.interfaces.ISizeService;
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
+@Builder
 public class SizeServiceImpl implements ISizeService {
     @Autowired
     private SizeRepository sizeRepository;
