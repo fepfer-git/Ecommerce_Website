@@ -35,4 +35,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userDtoResponse);
     }
 
+    @PutMapping("user")
+    public ResponseEntity<UserDtoResponse> updateUserInfo(@RequestBody UserDtoRequest userDtoRequest){
+        UserDtoResponse userDtoResponse = userService.updateAUser(userDtoRequest);
+        return ResponseEntity.ok().body(userDtoResponse);
+    }
+
+
 }

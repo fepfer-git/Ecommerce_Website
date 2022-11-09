@@ -9,5 +9,5 @@ public interface IUserService {
     UserDtoResponse createNewUser(UserDtoRequest userDtoRequest);
     UserDtoResponse getUser(String userName);
     List<UserDtoResponse> getUsers();
-
+    UserDtoResponse updateAUser(UserDtoRequest userDtoRequest);
 }

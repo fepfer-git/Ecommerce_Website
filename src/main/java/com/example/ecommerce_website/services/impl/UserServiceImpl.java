@@ -75,4 +75,35 @@ public class UserServiceImpl implements IUserService{
 
     }
 
+    @Override
+    public UserDtoResponse updateAUser(UserDtoRequest userDtoRequest) {
+        User foundUser = userRepository.findByUserName(userDtoRequest.getUserName());
+
+        if (foundUser == null){
+            throw new NotFoundException("User not found!");
+        }
+        if (userDtoRequest.getFullName() != null){
+            foundUser.setFullName(userDtoRequest.getFullName());
+        }
+        if(userDtoRequest.getEmail() != null){
+            User checkEmailUser = userRepository.findByEmail(userDtoRequest.getEmail());
+            if(checkEmailUser != null && checkEmailUser.getUserName().equals(userDtoRequest.getUserName())){
+                foundUser.setEmail(userDtoRequest.getEmail());
+            }else if(checkEmailUser != null){
+                throw new BadRequestException("Email is already exist!");
+            }else{
+                foundUser.setEmail(userDtoRequest.getEmail());
+            }
+        }
+        //Handel password
+        if(null != userDtoRequest.getPassword()){
+            if(!userDtoRequest.getPassword().equals(userDtoRequest.getConfirmPassword())) {
+                throw new BadRequestException("Confirm password do not match!");
+            }else{
+                foundUser.setPassword(passwordEncoder.encode(userDtoRequest.getPassword()));
+            }
+        }
+        return objectMapperUtils.map(userRepository.save(foundUser), UserDtoResponse.class);
+    }
+
 }
