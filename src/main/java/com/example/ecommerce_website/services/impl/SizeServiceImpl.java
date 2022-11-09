@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-
-@Service
 @Builder
+@Service
+
 public class SizeServiceImpl implements ISizeService {
     @Autowired
     private SizeRepository sizeRepository;
