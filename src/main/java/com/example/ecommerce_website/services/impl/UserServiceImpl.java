@@ -83,24 +83,33 @@ public class UserServiceImpl implements IUserService{
             throw new NotFoundException("User not found!");
         }
         if (userDtoRequest.getFullName() != null){
-            foundUser.setFullName(userDtoRequest.getFullName());
+            if (userDtoRequest.getFullName().equals("") == false){
+                foundUser.setFullName(userDtoRequest.getFullName());
+                log.info("chạy vào if của fullname");
+                log.info(userDtoRequest.getFullName());
+            }
+
         }
         if(userDtoRequest.getEmail() != null){
-            User checkEmailUser = userRepository.findByEmail(userDtoRequest.getEmail());
-            if(checkEmailUser != null && checkEmailUser.getUserName().equals(userDtoRequest.getUserName())){
-                foundUser.setEmail(userDtoRequest.getEmail());
-            }else if(checkEmailUser != null){
-                throw new BadRequestException("Email is already exist!");
-            }else{
-                foundUser.setEmail(userDtoRequest.getEmail());
+            if(userDtoRequest.getEmail().equals("") == false){
+                User checkEmailUser = userRepository.findByEmail(userDtoRequest.getEmail());
+                if(checkEmailUser != null && checkEmailUser.getUserName().equals(userDtoRequest.getUserName())){
+                    foundUser.setEmail(userDtoRequest.getEmail());
+                }else if(checkEmailUser != null){
+                    throw new BadRequestException("Email is already exist!");
+                }else{
+                    foundUser.setEmail(userDtoRequest.getEmail());
+                }
             }
         }
         //Handel password
-        if(null != userDtoRequest.getPassword()){
-            if(!userDtoRequest.getPassword().equals(userDtoRequest.getConfirmPassword())) {
-                throw new BadRequestException("Confirm password do not match!");
-            }else{
-                foundUser.setPassword(passwordEncoder.encode(userDtoRequest.getPassword()));
+        if(userDtoRequest.getPassword() != null){
+            if(userDtoRequest.getPassword().equals("") == false){
+                if(!userDtoRequest.getPassword().equals(userDtoRequest.getConfirmPassword())) {
+                    throw new BadRequestException("Confirm password do not match!");
+                }else{
+                    foundUser.setPassword(passwordEncoder.encode(userDtoRequest.getPassword()));
+                }
             }
         }
         return objectMapperUtils.map(userRepository.save(foundUser), UserDtoResponse.class);
