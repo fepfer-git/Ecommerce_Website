@@ -9,12 +9,14 @@ import com.example.ecommerce_website.repository.OrderDetailRepository;
 import com.example.ecommerce_website.repository.ProductDetailRepository;
 import com.example.ecommerce_website.services.interfaces.IOrderDetailService;
 import com.example.ecommerce_website.services.interfaces.IProductDetailService;
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 @Service
 public class OrderDetailServiceImpl implements IOrderDetailService {
     @Autowired
