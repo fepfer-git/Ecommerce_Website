@@ -13,6 +13,7 @@ import com.example.ecommerce_website.repository.ProductRepository;
 import com.example.ecommerce_website.repository.RatingRepository;
 import com.example.ecommerce_website.repository.UserRepository;
 import com.example.ecommerce_website.services.interfaces.IRatingService;
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
+@Builder
 @Service
 public class RatingServiceImpl implements IRatingService {
     @Autowired
